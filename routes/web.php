@@ -13,8 +13,10 @@ Route::get('/auth/redirect', function () {
 
 Route::get('/auth/callback', function () {
     $googleUser = Socialite::driver('google')->stateless()->user();
+
     $email = $googleUser->getEmail();
     $name = $googleUser->getName() ?? 'Unknown User';
+    $avatar = $googleUser->getAvatar() ?? ''; // <-- grab profile picture
     $domain = Str::after($email, '@');
 
     $isParagonEmail = Str::endsWith($domain, 'paragoniu.edu.kh');
@@ -37,6 +39,14 @@ Route::get('/auth/callback', function () {
 
     $token = $user->createToken('auth_token')->plainTextToken;
 
-    return Redirect::to("http://localhost:3000/auth/callback?token=$token");
+    // Pass token + name + email + avatar to frontend
+    return Redirect::to(
+        'http://localhost:3000/auth/callback?' .
+        http_build_query([
+            'token' => $token,
+            'name' => $name,
+            'email' => $email,
+            'avatar' => $avatar,
+        ])
+    );
 });
-
