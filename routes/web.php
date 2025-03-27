@@ -6,17 +6,21 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Response;
 
+// Google OAuth redirect
 Route::get('/auth/redirect', function () {
     return Socialite::driver('google')->redirect();
 });
 
+// Google OAuth callback
 Route::get('/auth/callback', function () {
     $googleUser = Socialite::driver('google')->stateless()->user();
 
     $email = $googleUser->getEmail();
     $name = $googleUser->getName() ?? 'Unknown User';
-    $avatar = $googleUser->getAvatar() ?? ''; // <-- grab profile picture
+    $originalAvatar = $googleUser->getAvatar() ?? '';
     $domain = Str::after($email, '@');
 
     $isParagonEmail = Str::endsWith($domain, 'paragoniu.edu.kh');
@@ -26,7 +30,7 @@ Route::get('/auth/callback', function () {
         abort(403, 'Not authorized');
     }
 
-    // Hash a dummy password (not used for Google login)
+    // Create or find user
     $dummyPassword = bcrypt(Str::random(16));
 
     $user = User::firstOrCreate(
@@ -39,14 +43,40 @@ Route::get('/auth/callback', function () {
 
     $token = $user->createToken('auth_token')->plainTextToken;
 
-    // Pass token + name + email + avatar to frontend
+    // Proxy the avatar through Laravel
+    $proxiedAvatar = $originalAvatar
+        ? url('/proxy-avatar?url=' . urlencode($originalAvatar))
+        : '';
+
+    // Redirect to frontend with data
     return Redirect::to(
         'http://localhost:3000/auth/callback?' .
         http_build_query([
             'token' => $token,
             'name' => $name,
             'email' => $email,
-            'avatar' => $avatar,
+            'avatar' => $proxiedAvatar,
         ])
     );
+});
+
+// Proxy route for avatar
+Route::get('/proxy-avatar', function () {
+    $url = request('url');
+
+    if (!$url || !filter_var($url, FILTER_VALIDATE_URL)) {
+        abort(400, 'Invalid image URL');
+    }
+
+    try {
+        $imageResponse = Http::get($url);
+
+        $contentType = $imageResponse->header('Content-Type') ?? 'image/jpeg';
+
+        return Response::make($imageResponse->body(), 200)
+            ->header('Content-Type', $contentType)
+            ->header('Cache-Control', 'max-age=86400');
+    } catch (\Exception $e) {
+        abort(500, 'Failed to load avatar');
+    }
 });
