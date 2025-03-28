@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use App\Models\Contract;
+use App\Models\Invite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redirect;
@@ -41,12 +43,19 @@ Route::get('/auth/callback', function () {
         ]
     );
 
+    // ✅ Assign user to any contracts they were invited to
+    $invitedContracts = Invite::where('email', $email)->get();
+    foreach ($invitedContracts as $invite) {
+        $contract = Contract::find($invite->contract_id);
+        if ($contract) {
+            $contract->members()->syncWithoutDetaching($user->id);
+        }
+    }
+
     $token = $user->createToken('auth_token')->plainTextToken;
 
     // Proxy the avatar through Laravel
-    $proxiedAvatar = $originalAvatar
-        ? url('/proxy-avatar?url=' . urlencode($originalAvatar))
-        : '';
+    $avatar = $googleUser->getAvatar() ?? '';
 
     // Redirect to frontend with data
     return Redirect::to(
@@ -55,7 +64,8 @@ Route::get('/auth/callback', function () {
             'token' => $token,
             'name' => $name,
             'email' => $email,
-            'avatar' => $proxiedAvatar,
+            'avatar' => $avatar,
+            'user_id' => $user->id,
         ])
     );
 });
@@ -80,3 +90,4 @@ Route::get('/proxy-avatar', function () {
         abort(500, 'Failed to load avatar');
     }
 });
+

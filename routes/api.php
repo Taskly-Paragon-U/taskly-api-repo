@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ContractController;
 
 
@@ -22,4 +23,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // POST /api/contracts
     Route::post('/contracts', [ContractController::class, 'store']);
+    Route::get('/contracts', [ContractController::class, 'index']);
+    Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
 });
