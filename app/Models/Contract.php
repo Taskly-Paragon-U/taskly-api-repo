@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Models\User;
 use App\Models\Invite;
 
@@ -13,19 +14,51 @@ class Contract extends Model
 
     protected $fillable = ['user_id', 'name', 'details'];
 
-    // Users invited to this contract (registered users)
-    public function members()
+    /**
+     * All users on this contract, with their pivot role.
+     */
+    public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'contract_user');
+        return $this->belongsToMany(User::class, 'contract_user')
+                    ->withPivot('role')
+                    ->withTimestamps();
     }
 
-    // Creator of the contract
+    /**
+     * Shortcut: just the owner(s).
+     */
+    public function owners(): BelongsToMany
+    {
+        return $this->members()->wherePivot('role', 'owner');
+    }
+
+    /**
+     * Shortcut: only submitter submittors.
+     */
+    public function submitters(): BelongsToMany
+    {
+        return $this->members()->wherePivot('role', 'submitter');
+    }
+
+    /**
+     * Shortcut: only supervisors.
+     */
+    public function supervisors(): BelongsToMany
+    {
+        return $this->members()->wherePivot('role', 'supervisor');
+    }
+
+    /**
+     * Creator of the contract.
+     */
     public function creator()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    // Email invites (users may or may not exist yet)
+    /**
+     * Email invites (users may or may not exist yet).
+     */
     public function invites()
     {
         return $this->hasMany(Invite::class);
