@@ -24,5 +24,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // POST /api/contracts
     Route::post('/contracts', [ContractController::class, 'store']);
     Route::get('/contracts', [ContractController::class, 'index']);
+    Route::get('/contracts/{id}', [ContractController::class, 'show']);
     Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
 });

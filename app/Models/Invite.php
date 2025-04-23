@@ -9,7 +9,7 @@ class Invite extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['contract_id', 'email', 'invited_by'];
+    protected $fillable = ['contract_id', 'email', 'invited_by', 'role'];
 
     public function contract()
     {
