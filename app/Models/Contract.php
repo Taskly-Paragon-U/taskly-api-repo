@@ -57,10 +57,18 @@ class Contract extends Model
     }
 
     /**
-     * Email invites (users may or may not exist yet).
+     * Email invites
      */
     public function invites()
+{
+    return $this->hasMany(Invite::class);
+}
+
+    public function users()
     {
-        return $this->hasMany(Invite::class);
+        return $this->belongsToMany(User::class)
+                    ->withPivot('role')
+                    ->withTimestamps();
     }
+
 }

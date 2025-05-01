@@ -6,11 +6,18 @@ use App\Models\Contract;
 use App\Models\User;
 use App\Models\Invite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;                    
+use Illuminate\Support\Facades\Mail;
+use App\Mail\InviteContract;
 
 class InviteController extends Controller
 {
+    /**
+     * POST /api/contracts/{id}/invite
+     */
     public function invite(Request $request, $contractId)
     {
+        
         // 1) Validate input
         $data = $request->validate([
             'emails'    => 'required|array',
@@ -29,13 +36,10 @@ class InviteController extends Controller
         $results = [];
 
         foreach ($data['emails'] as $email) {
-            $invitee = User::where('email', $email)->first();
-
-            if ($invitee) {
-                // 3) Attach existing user with the correct role
+            if ($invitee = User::where('email', $email)->first()) {
                 $contract->members()
                          ->syncWithoutDetaching([
-                             $invitee->id => ['role' => $data['role']]
+                             $invitee->id => ['role' => $data['role']],
                          ]);
 
                 $results[] = [
@@ -43,23 +47,25 @@ class InviteController extends Controller
                     'status' => 'attached',
                     'role'   => $data['role'],
                 ];
-            } else {
-                // 4) Create a pending invite, storing the role
-                $invite = Invite::firstOrCreate(
-                    [
-                        'contract_id' => $contract->id,
-                        'email'       => $email,
-                    ],
-                    [
-                        'invited_by'  => $user->id,
-                        'role'        => $data['role'],
-                    ]
-                );
+            }else {
+                
+                // 2) NEW EMAIL: create a full Invite record *including* token
+                $invite = Invite::create([
+                    'token'       => Str::uuid(),          // <— generate the token here
+                    'contract_id' => $contract->id,
+                    'email'       => $email,
+                    'role'        => $data['role'],
+                    'invited_by'  => $user->id,
+                    // consumed defaults to false
+                ]);
+
+                // 3) Send the invitation email
+                Mail::to($email)->send(new InviteContract($invite));
 
                 $results[] = [
-                    'email'  => $email,
-                    'status' => 'invited',
-                    'role'   => $data['role'],
+                   'email'  => $email,
+                   'status' => 'invited',
+                   'role'   => $data['role'],
                 ];
             }
         }
@@ -68,5 +74,59 @@ class InviteController extends Controller
             'message' => 'Invites processed',
             'results' => $results,
         ], 200);
+    }
+
+    /**
+     * GET /api/invites/{token}
+     */
+    public function show($token)
+    {
+        $invite = Invite::where('token', $token)
+                        ->where('consumed', false)
+                        ->with('contract:id,name')
+                        ->firstOrFail();
+
+        return response()->json([
+            'contract_id'   => $invite->contract->id,
+            'contract_name' => $invite->contract->name,
+            'email'         => $invite->email,
+            'role'          => $invite->role,
+        ]);
+    }
+
+    /**
+     * POST /api/invites/{token}/accept
+     */
+    public function accept(Request $request, $token)
+    {
+        $user = $request->user();
+
+        $invite = Invite::where('token', $token)
+                        ->where('consumed', false)
+                        ->firstOrFail();
+
+        if ($user->email !== $invite->email) {
+            return response()->json([
+                'message' => 'This invitation was sent to '.$invite->email,
+            ], 403);
+        }
+
+        // Attach to contract
+        $invite->contract
+               ->users()
+               ->syncWithoutDetaching([
+                   $user->id => ['role' => $invite->role],
+               ]);
+
+        // Mark invite consumed
+        $invite->consumed = true;
+        $invite->save();
+
+        return response()->json([
+            'message'       => 'Invitation accepted',
+            'contract_id'   => $invite->contract->id,
+            'contract_name' => $invite->contract->name,
+            'role'          => $invite->role,
+        ]);
     }
 }

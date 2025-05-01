@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('invites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contract_id')->constrained()->onDelete('cascade');
-            $table->string('email'); // invited email
-            $table->foreignId('invited_by')->constrained('users')->onDelete('cascade'); // who invited
+            $table->uuid('token')->unique();                // ← one-time lookup key
+            $table->foreignId('contract_id')
+                  ->constrained()->onDelete('cascade');
+            $table->string('email');                        // invited email
+            $table->enum('role', ['submitter','supervisor']);
+            $table->foreignId('invited_by')
+                  ->constrained('users')->onDelete('cascade');
+            $table->boolean('consumed')->default(false);    // ← mark when claimed
             $table->timestamps();
-        });
+        });        
         
     }
 
