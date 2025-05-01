@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Traits\Timestamp;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -32,7 +33,9 @@ class User extends Authenticatable
     // Contracts created by this user
     public function contracts()
     {
-        return $this->hasMany(Contract::class);
+        return $this->belongsToMany(Contract::class)
+                    ->withPivot('role')
+                    ->withTimestamps();
     }
 
     // Contracts this user was invited to (via pivot)
@@ -41,9 +44,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Contract::class, 'contract_user');
     }
 
-    // Invites sent by this user (optional)
+    // Invites sent by this user
     public function sentInvites()
     {
         return $this->hasMany(Invite::class, 'invited_by');
     }
+    
 }
