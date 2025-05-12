@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contract;
+use Illuminate\Support\Str;         
 
 class ContractController extends Controller
 {
@@ -12,32 +13,38 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
+        // ── BLOCK GMAIL USERS HERE ──
+        $domain = Str::after($request->user()->email, '@');
+        if ($domain === 'gmail.com') {
+            return response()->json([
+                'message' => 'You are not allowed to create new contracts.'
+            ], 403);
+        }
+
+        // ── REST OF YOUR EXISTING LOGIC ──
         $validated = $request->validate([
             'name'    => 'required|string|max:255',
             'details' => 'required|string',
         ]);
 
-        // Create the contract
         $contract = Contract::create([
             'user_id' => $request->user()->id,
             'name'    => $validated['name'],
             'details' => $validated['details'],
         ]);
 
-        // Attach the creator to the pivot with role = owner
         $contract->members()->attach(
             $request->user()->id,
             ['role' => 'owner']
         );
 
-        // Return the freshly created contract with its members
         return response()->json([
             'message'  => 'Contract created',
             'contract' => $contract->load('members'),
         ], 201);
     }
 
-    /**
+     /**
      * Get contracts where user is creator OR a member (any role).
      */
     public function index(Request $request)

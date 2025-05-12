@@ -13,5 +13,6 @@ If you don't have a Taskly account yet, you'll be prompted to sign up (pre-fille
 If you already have an account, just log in and you'll be added automatically.
 
 Thanks,<br>
-{{ config('app.name') }}
+Taskly
+{{-- {{ config('app.name') }} --}}
 @endcomponent

@@ -22,6 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    
+    Route::get('/contracts/{contract}/invites',[InviteController::class, 'listByContract']);
     // POST /api/contracts
     Route::post('/contracts', [ContractController::class, 'store']);
     Route::get('/contracts', [ContractController::class, 'index']);

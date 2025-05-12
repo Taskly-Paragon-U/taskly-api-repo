@@ -129,4 +129,12 @@ class InviteController extends Controller
             'role'          => $invite->role,
         ]);
     }
+
+    public function listByContract($contractId)
+    {
+        $invites = Invite::where('contract_id', $contractId)
+                         ->orderBy('created_at', 'desc')
+                         ->get(['id','email','role','invited_by','consumed']);
+        return response()->json($invites);
+    }
 }
