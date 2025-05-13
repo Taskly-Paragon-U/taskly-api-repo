@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\TimesheetTask;
@@ -7,26 +6,27 @@ use Illuminate\Http\Request;
 
 class TimesheetTaskController extends Controller
 {
+    public function index(Request $request)
+    {
+        $q = TimesheetTask::query();
+        if ($request->filled('contract_id')) {
+            $q->where('contract_id', $request->contract_id);
+        }
+        return response()->json($q->get());
+    }
+
     public function create(Request $request)
     {
-        // validate only the fields the client should supply
-        $request->validate([
+        $data = $request->validate([
             'title'       => 'required|string',
             'details'     => 'nullable|string',
             'start_date'  => 'required|date',
             'due_date'    => 'required|date',
+            'role'        => 'required|in:submitter,supervisor',
             'contract_id' => 'required|exists:contracts,id',
         ]);
 
-        $task = TimesheetTask::create([
-            'title'       => $request->title,
-            'details'     => $request->details,
-            'start_date'  => $request->start_date,
-            'due_date'    => $request->due_date,
-            // hard-code the role to submitter
-            'role'        => 'submitter',
-            'contract_id' => $request->contract_id,
-        ]);
+        $task = TimesheetTask::create($data);
 
         return response()->json([
             'message' => 'Timesheet Task Created Successfully!',
@@ -34,14 +34,29 @@ class TimesheetTaskController extends Controller
         ], 201);
     }
 
-    public function index()
+    // ✏️ Update an existing task
+    public function update(Request $request, TimesheetTask $task)
     {
-        // If you want participants only to see submitter-tasks:
-        // $tasks = TimesheetTask::where('role','submitter')->get();
+        $data = $request->validate([
+            'title'      => 'required|string',
+            'details'    => 'nullable|string',
+            'start_date' => 'required|date',
+            'due_date'   => 'required|date',
+            // you can validate role/contract_id here if you want
+        ]);
 
-        // Or if everyone sees all tasks:
-        $tasks = TimesheetTask::all();
+        $task->update($data);
 
-        return response()->json($tasks);
+        return response()->json([
+            'message' => 'Timesheet Task Updated!',
+            'task'    => $task,
+        ]);
+    }
+
+    // 🗑️ Delete a task
+    public function destroy(TimesheetTask $task)
+    {
+        $task->delete();
+        return response()->json(['message' => 'Timesheet Task Deleted']);
     }
 }

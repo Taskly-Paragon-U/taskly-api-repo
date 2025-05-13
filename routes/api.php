@@ -35,4 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::post('/timesheet-tasks', [TimesheetTaskController::class, 'create']);
     Route::get('/timesheet-tasks', [TimesheetTaskController::class, 'index']);
+
+    Route::patch('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'update']);
+    Route::delete('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'destroy']);
 });
