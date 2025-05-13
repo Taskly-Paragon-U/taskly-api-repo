@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\TimesheetTaskController;
 
 
 /*
@@ -31,4 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
     // Accept an invite when user have done login
     Route::post('invites/{token}/accept',[InviteController::class,'accept']);
+    
+    Route::post('/timesheet-tasks', [TimesheetTaskController::class, 'create']);
+    Route::get('/timesheet-tasks', [TimesheetTaskController::class, 'index']);
 });
