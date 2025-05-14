@@ -72,4 +72,55 @@ class ContractController extends Controller
             'contract' => $contract
         ], 200);
     }
+        /**
+     * Get the authenticated user's role in a specific contract.
+     * GET /api/contracts/{id}/me
+     */
+    public function myRole(Request $request, $id)
+    {
+        $user = $request->user();
+        $contract = Contract::findOrFail($id);
+
+        $role = $contract->users()
+            ->where('user_id', $user->id)
+            ->first()?->pivot->role;
+
+        return response()->json([
+            'contract_id' => $contract->id,
+            'role' => $role,
+        ]);
+    }
+        /**
+     * PATCH /api/contracts/{contract}/members/{user}
+     */
+    public function updateMember(Request $request, $contractId, $userId)
+    {
+        $data = $request->validate([
+            'supervisor_id' => 'nullable|exists:users,id',
+        ]);
+
+        $contract = Contract::findOrFail($contractId);
+        if (! $contract->members->contains($userId)) {
+            return response()->json(['message' => 'User not part of this contract'], 404);
+        }
+
+        $contract->members()
+                ->updateExistingPivot($userId, [
+                    'supervisor_id' => $data['supervisor_id'],
+                ]);
+
+        // 👉 Load the updated pivot
+        $member = $contract->members()
+                        ->where('user_id', $userId)
+                        ->first();
+
+        return response()->json([
+            'message'       => 'Supervisor updated',
+            'supervisor_id'=> $member->pivot->supervisor_id,
+        ], 200);
+    }
+
+
+
+
 }

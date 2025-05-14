@@ -29,7 +29,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/contracts', [ContractController::class, 'store']);
     Route::get('/contracts', [ContractController::class, 'index']);
     Route::get('/contracts/{id}', [ContractController::class, 'show']);
+    Route::get('/contracts/{id}/me', [ContractController::class, 'myRole']);
     Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
+    Route::patch('/contracts/{contract}/members/{user}', [ContractController::class, 'updateMember']
+);
+
+
     // Accept an invite when user have done login
     Route::post('invites/{token}/accept',[InviteController::class,'accept']);
     

@@ -45,9 +45,12 @@ Route::get('/auth/callback', function (Request $request) {
           ->where('consumed',false)
           ->get()
           ->each(function($invite) use ($user) {
-              $invite->contract
-                     ->members()
-                     ->syncWithoutDetaching($user->id);
+            $invite->contract
+                ->members()
+                ->syncWithoutDetaching([
+                    $user->id => ['role' => $invite->role]
+                ]);
+
 
               // mark the invite consumed so it won’t show again
               $invite->update(['consumed' => true]);
