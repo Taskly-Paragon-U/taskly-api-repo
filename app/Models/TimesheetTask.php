@@ -16,5 +16,6 @@ class TimesheetTask extends Model
         'due_date',
         'role',
         'contract_id',
+        'template_link',    // ← new
     ];
 }

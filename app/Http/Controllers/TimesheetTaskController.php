@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\TimesheetTask;
@@ -17,15 +18,26 @@ class TimesheetTaskController extends Controller
 
     public function create(Request $request)
     {
+        // 1) validate incoming fields
         $data = $request->validate([
-            'title'       => 'required|string',
-            'details'     => 'nullable|string',
-            'start_date'  => 'required|date',
-            'due_date'    => 'required|date',
-            'role'        => 'required|in:submitter,supervisor',
-            'contract_id' => 'required|exists:contracts,id',
+            'title'          => 'required|string',
+            'details'        => 'nullable|string',
+            'start_date'     => 'required|date',
+            'due_date'       => 'nullable|date',
+            'role'           => 'required|in:submitter,supervisor',
+            'contract_id'    => 'required|exists:contracts,id',
+            'template_link'  => 'nullable|url',
+            'template_file'  => 'nullable|file|mimes:pdf,xlsx,xls|max:10240', // 10MB max
         ]);
 
+        // 2) if they uploaded a file, store it and override just that field
+        if ($request->hasFile('template_file')) {
+            $data['template_file'] = $request
+                ->file('template_file')
+                ->store('timesheet_templates', 'public');
+        }
+
+        // 3) create the record
         $task = TimesheetTask::create($data);
 
         return response()->json([
@@ -34,16 +46,23 @@ class TimesheetTaskController extends Controller
         ], 201);
     }
 
-    // ✏️ Update an existing task
     public function update(Request $request, TimesheetTask $task)
     {
+        // You can allow changing link or file on edit too
         $data = $request->validate([
-            'title'      => 'required|string',
-            'details'    => 'nullable|string',
-            'start_date' => 'required|date',
-            'due_date'   => 'required|date',
-            // you can validate role/contract_id here if you want
+            'title'          => 'required|string',
+            'details'        => 'nullable|string',
+            'start_date'     => 'required|date',
+            'due_date'       => 'nullable|date',
+            'template_link'  => 'nullable|url',
+            'template_file'  => 'nullable|file|mimes:pdf,xlsx,xls|max:10240',
         ]);
+
+        if ($request->hasFile('template_file')) {
+            $data['template_file'] = $request
+                ->file('template_file')
+                ->store('timesheet_templates', 'public');
+        }
 
         $task->update($data);
 
@@ -53,7 +72,6 @@ class TimesheetTaskController extends Controller
         ]);
     }
 
-    // 🗑️ Delete a task
     public function destroy(TimesheetTask $task)
     {
         $task->delete();
