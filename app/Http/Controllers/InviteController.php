@@ -23,6 +23,10 @@ class InviteController extends Controller
             'emails'    => 'required|array',
             'emails.*'  => 'required|email',
             'role'      => ['required','in:submitter,supervisor'],
+            'major'          => 'nullable|string',
+            'contract_start' => 'nullable|date',
+            'contract_end'   => 'nullable|date',
+            'supervisor_id'  => 'nullable|exists:users,id',
         ]);
 
         $user = $request->user();
@@ -50,14 +54,18 @@ class InviteController extends Controller
             }else {
                 
                 // 2) NEW EMAIL: create a full Invite record *including* token
-                $invite = Invite::create([
-                    'token'       => Str::uuid(),          // <— generate the token here
-                    'contract_id' => $contract->id,
-                    'email'       => $email,
-                    'role'        => $data['role'],
-                    'invited_by'  => $user->id,
-                    // consumed defaults to false
-                ]);
+            $invite = Invite::create([
+                'token'          => Str::uuid(),
+                'contract_id'    => $contract->id,
+                'email'          => $email,
+                'role'           => $data['role'],
+                'invited_by'     => $user->id,
+                'major'          => $data['major'] ?? null,
+                'contract_start' => $data['contract_start'] ?? null,
+                'contract_end'   => $data['contract_end'] ?? null,
+                'supervisor_id'  => $data['supervisor_id'] ?? null,
+            ]);
+
 
                 // 3) Send the invitation email
                 Mail::to($email)->send(new InviteContract($invite));

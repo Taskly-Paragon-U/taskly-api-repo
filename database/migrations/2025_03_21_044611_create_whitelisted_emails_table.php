@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class DropWhitelistedEmails extends Migration
+class CreateWhitelistedEmailsTable extends Migration
 {
     public function up()
     {

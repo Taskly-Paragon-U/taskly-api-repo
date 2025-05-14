@@ -9119,3 +9119,23 @@ Did you mean one of these?
 #44 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('D:\\\\Taskly\\\\taskl...')
 #45 {main}
 "} 
+[2025-05-14 08:11:19] local.ERROR: Cannot redeclare class DropWhitelistedEmails (previously declared in D:\year4\FYP2\Taskly_Project\taskly-api-repo\database\migrations\2025_03_21_044611_create_whitelisted_emails_table.php:6) {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare class DropWhitelistedEmails (previously declared in D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6) at D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6)
+[stacktrace]
+#0 {main}
+"} 
+[2025-05-14 08:11:28] local.ERROR: Cannot redeclare class DropWhitelistedEmails (previously declared in D:\year4\FYP2\Taskly_Project\taskly-api-repo\database\migrations\2025_03_21_044611_create_whitelisted_emails_table.php:6) {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare class DropWhitelistedEmails (previously declared in D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6) at D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6)
+[stacktrace]
+#0 {main}
+"} 
+[2025-05-14 08:13:58] local.ERROR: Cannot redeclare class DropWhitelistedEmails (previously declared in D:\year4\FYP2\Taskly_Project\taskly-api-repo\database\migrations\2025_03_21_044611_create_whitelisted_emails_table.php:6) {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare class DropWhitelistedEmails (previously declared in D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6) at D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6)
+[stacktrace]
+#0 {main}
+"} 
+[2025-05-14 08:14:11] local.ERROR: Cannot redeclare class DropWhitelistedEmails (previously declared in D:\year4\FYP2\Taskly_Project\taskly-api-repo\database\migrations\2025_03_21_044611_create_whitelisted_emails_table.php:6) {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare class DropWhitelistedEmails (previously declared in D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6) at D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6)
+[stacktrace]
+#0 {main}
+"} 
+[2025-05-14 08:14:33] local.ERROR: Cannot redeclare class DropWhitelistedEmails (previously declared in D:\year4\FYP2\Taskly_Project\taskly-api-repo\database\migrations\2025_03_21_044611_create_whitelisted_emails_table.php:6) {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Cannot redeclare class DropWhitelistedEmails (previously declared in D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6) at D:\\year4\\FYP2\\Taskly_Project\\taskly-api-repo\\database\\migrations\\2025_03_21_044611_create_whitelisted_emails_table.php:6)
+[stacktrace]
+#0 {main}
+"} 
