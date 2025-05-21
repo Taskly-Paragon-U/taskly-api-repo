@@ -16,6 +16,13 @@ class TimesheetTask extends Model
         'due_date',
         'role',
         'contract_id',
-        'template_link',    // ← new
+        'template_link',
+        'template_file',
     ];
+
+    public function submissions()
+    {
+        return $this->hasMany(SubmittedTimesheet::class, 'task_id');
+    }
+
 }
