@@ -1,46 +1,45 @@
-<?php
+    <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\InviteController;
-use App\Http\Controllers\ContractController;
-use App\Http\Controllers\TimesheetTaskController;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Route;
+    use App\Http\Controllers\InviteController;
+    use App\Http\Controllers\ContractController;
+    use App\Http\Controllers\TimesheetTaskController;
 
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| These routes are loaded by the RouteServiceProvider within a group that
-| is assigned the "api" middleware group. Sanctum will handle auth tokens.
-|
-*/
-Route::get('invites/{token}', [InviteController::class,'show']);
+    /*
+    |--------------------------------------------------------------------------
+    | API Routes
+    |--------------------------------------------------------------------------
+    |
+    | These routes are loaded by the RouteServiceProvider within a group that
+    | is assigned the "api" middleware group. Sanctum will handle auth tokens.
+    |
+    */
+    Route::get('invites/{token}', [InviteController::class,'show']);
 
-Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('auth:sanctum')->group(function () {
 
-    Route::get('/user', function (Request $request) {
-        return $request->user();
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        });
+        
+        Route::get('/contracts/{contract}/invites',[InviteController::class, 'listByContract']);
+        // POST /api/contracts
+        Route::post('/contracts', [ContractController::class, 'store']);
+        Route::get('/contracts', [ContractController::class, 'index']);
+        Route::get('/contracts/{id}', [ContractController::class, 'show']);
+        Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
+        // Accept an invite when user have done login
+        Route::post('invites/{token}/accept',[InviteController::class,'accept']);
+        
+        Route::post('/timesheet-tasks', [TimesheetTaskController::class, 'create']);
+        Route::get('/timesheet-tasks', [TimesheetTaskController::class, 'index']);
+
+        Route::patch('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'update']);
+        Route::delete('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'destroy']);
+
+        Route::post('/submit-timesheet', [TimesheetTaskController::class, 'submit']);
+        Route::get('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'show']);
+
     });
-    
-    Route::get('/contracts/{contract}/invites',[InviteController::class, 'listByContract']);
-    // POST /api/contracts
-    Route::post('/contracts', [ContractController::class, 'store']);
-    Route::get('/contracts', [ContractController::class, 'index']);
-    Route::get('/contracts/{id}', [ContractController::class, 'show']);
-    Route::get('/contracts/{id}/me', [ContractController::class, 'myRole']);
-    Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
-    Route::patch('/contracts/{contract}/members/{user}', [ContractController::class, 'updateMember']
-);
-
-
-    // Accept an invite when user have done login
-    Route::post('invites/{token}/accept',[InviteController::class,'accept']);
-    
-    Route::post('/timesheet-tasks', [TimesheetTaskController::class, 'create']);
-    Route::get('/timesheet-tasks', [TimesheetTaskController::class, 'index']);
-
-    Route::patch('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'update']);
-    Route::delete('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'destroy']);
-});
