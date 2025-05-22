@@ -7,13 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 class SubmittedTimesheet extends Model
 {
     protected $table = 'submitted_timesheets';
-    public    $timestamps = false; // we use our own submitted_at
+
+    // Let Eloquent know we only have submitted_at
+    public $timestamps = true;
+    const CREATED_AT = 'submitted_at';
+    const UPDATED_AT = null;
 
     protected $fillable = [
         'task_id',
         'user_id',
         'file_path',
-        'submitted_at',
+        // submitted_at is auto‐set by the DB
     ];
 
     public function task()

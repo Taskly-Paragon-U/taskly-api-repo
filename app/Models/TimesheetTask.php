@@ -18,11 +18,22 @@ class TimesheetTask extends Model
         'contract_id',
         'template_link',
         'template_file',
+        'template_file_name',
     ];
 
+    /**
+     * The owning contract.
+     */
+    public function contract()
+    {
+        return $this->belongsTo(Contract::class, 'contract_id');
+    }
+
+    /**
+     * All submitted timesheets for this task.
+     */
     public function submissions()
     {
         return $this->hasMany(SubmittedTimesheet::class, 'task_id');
     }
-
 }

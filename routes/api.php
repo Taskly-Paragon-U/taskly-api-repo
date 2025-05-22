@@ -1,10 +1,10 @@
-    <?php
+<?php
 
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Route;
-    use App\Http\Controllers\InviteController;
-    use App\Http\Controllers\ContractController;
-    use App\Http\Controllers\TimesheetTaskController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\InviteController;
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\TimesheetTaskController;
 
 
     /*
@@ -30,16 +30,11 @@
         Route::get('/contracts', [ContractController::class, 'index']);
         Route::get('/contracts/{id}', [ContractController::class, 'show']);
         Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
-        // Accept an invite when user have done login
         Route::post('invites/{token}/accept',[InviteController::class,'accept']);
-        
-        Route::post('/timesheet-tasks', [TimesheetTaskController::class, 'create']);
-        Route::get('/timesheet-tasks', [TimesheetTaskController::class, 'index']);
-
-        Route::patch('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'update']);
+        Route::get   ('/timesheet-tasks', [TimesheetTaskController::class, 'index']);
+        Route::get   ('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'show']);
+        Route::post  ('/timesheet-tasks', [TimesheetTaskController::class, 'create']);
+        Route::patch ('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'update']);
         Route::delete('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'destroy']);
-
-        Route::post('/submit-timesheet', [TimesheetTaskController::class, 'submit']);
-        Route::get('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'show']);
-
-    });
+        Route::post  ('/submit-timesheet', [TimesheetTaskController::class, 'submit']);
+});
