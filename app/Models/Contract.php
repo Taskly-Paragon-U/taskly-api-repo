@@ -14,15 +14,13 @@ class Contract extends Model
 
     protected $fillable = ['user_id', 'name', 'details'];
 
-    /**
-     * All users on this contract, with their pivot role.
-     */
-    public function members(): BelongsToMany
+    public function members()
     {
-        return $this->belongsToMany(User::class, 'contract_user')
-                    ->withPivot('role')
+        return $this->belongsToMany(User::class)
+                    ->withPivot(['role','start_date','due_date','supervisor_id'])
                     ->withTimestamps();
     }
+
 
     /**
      * Shortcut: just the owner(s).

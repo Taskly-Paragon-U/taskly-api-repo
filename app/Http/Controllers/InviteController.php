@@ -15,20 +15,23 @@ class InviteController extends Controller
     /**
      * POST /api/contracts/{id}/invite
      */
+// inside InviteController.php
+
     public function invite(Request $request, $contractId)
     {
-        
-        // 1) Validate input
+        // 1) Validate input, now including start_date & due_date
         $data = $request->validate([
-            'emails'    => 'required|array',
-            'emails.*'  => 'required|email',
-            'role'      => ['required','in:submitter,supervisor'],
+            'emails'     => 'required|array',
+            'emails.*'   => 'required|email',
+            'role'       => ['required','in:submitter,supervisor'],
+            'start_date' => 'required_if:role,submitter|date',
+            'due_date'   => 'nullable|date',
+            'supervisor_id' => 'nullable|integer|exists:users,id',
         ]);
 
-        $user = $request->user();
+        $user     = $request->user();
         $contract = Contract::findOrFail($contractId);
 
-        // 2) Only the contract owner may invite
         if (! $contract->owners->contains($user->id)) {
             return response()->json(['message' => 'Forbidden'], 403);
         }
@@ -37,35 +40,40 @@ class InviteController extends Controller
 
         foreach ($data['emails'] as $email) {
             if ($invitee = User::where('email', $email)->first()) {
-                $contract->members()
-                         ->syncWithoutDetaching([
-                             $invitee->id => ['role' => $data['role']],
-                         ]);
+                // existing user → attach immediately, writing start/due dates into the pivot
+                $contract->members()->syncWithoutDetaching([
+                    $invitee->id => [
+                        'role'         => $data['role'],
+                        'start_date'   => $data['start_date'] ?? null,
+                        'due_date'     => $data['due_date']   ?? null,
+                        'supervisor_id'=> $data['supervisor_id'] ?? null,
+                    ],
+                ]);
 
                 $results[] = [
                     'email'  => $email,
                     'status' => 'attached',
                     'role'   => $data['role'],
                 ];
-            }else {
-                
-                // 2) NEW EMAIL: create a full Invite record *including* token
+            } else {
+                // brand-new → queue invite with token + metadata
                 $invite = Invite::create([
-                    'token'       => Str::uuid(),          // <— generate the token here
-                    'contract_id' => $contract->id,
-                    'email'       => $email,
-                    'role'        => $data['role'],
-                    'invited_by'  => $user->id,
-                    // consumed defaults to false
+                    'token'         => Str::uuid(),
+                    'contract_id'   => $contract->id,
+                    'email'         => $email,
+                    'role'          => $data['role'],
+                    'start_date'    => $data['start_date']    ?? null,
+                    'due_date'      => $data['due_date']      ?? null,
+                    'supervisor_id' => $data['supervisor_id'] ?? null,
+                    'invited_by'    => $user->id,
                 ]);
 
-                // 3) Send the invitation email
                 Mail::to($email)->send(new InviteContract($invite));
 
                 $results[] = [
-                   'email'  => $email,
-                   'status' => 'invited',
-                   'role'   => $data['role'],
+                    'email'  => $email,
+                    'status' => 'invited',
+                    'role'   => $data['role'],
                 ];
             }
         }
@@ -75,6 +83,7 @@ class InviteController extends Controller
             'results' => $results,
         ], 200);
     }
+
 
     /**
      * GET /api/invites/{token}
@@ -111,14 +120,20 @@ class InviteController extends Controller
             ], 403);
         }
 
-        // Attach to contract
+        // Attach to contract on the same 'members()' relation
+        // so we get start_date, due_date & supervisor_id too.
         $invite->contract
-               ->users()
-               ->syncWithoutDetaching([
-                   $user->id => ['role' => $invite->role],
-               ]);
+            ->users()
+            ->syncWithoutDetaching([
+                $user->id => [
+                    'role'          => $invite->role,
+                    'start_date'    => $invite->start_date,
+                    'due_date'      => $invite->due_date,
+                    'supervisor_id' => $invite->supervisor_id,
+                ],
+            ]);
 
-        // Mark invite consumed
+        // Mark the invite as consumed
         $invite->consumed = true;
         $invite->save();
 
@@ -129,6 +144,7 @@ class InviteController extends Controller
             'role'          => $invite->role,
         ]);
     }
+
 
     public function listByContract($contractId)
     {
