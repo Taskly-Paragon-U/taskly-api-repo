@@ -30,6 +30,8 @@ use App\Http\Controllers\TimesheetTaskController;
         Route::get('/contracts', [ContractController::class, 'index']);
         Route::get('/contracts/{id}', [ContractController::class, 'show']);
         Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
+        Route::patch('invites/{invite}',  [InviteController::class, 'update']);
+        Route::delete('invites/{invite}', [InviteController::class, 'destroy']);
         Route::post('invites/{token}/accept',[InviteController::class,'accept']);
         Route::get   ('/timesheet-tasks', [TimesheetTaskController::class, 'index']);
         Route::get   ('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'show']);

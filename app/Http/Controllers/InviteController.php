@@ -123,7 +123,7 @@ class InviteController extends Controller
         // Attach to contract on the same 'members()' relation
         // so we get start_date, due_date & supervisor_id too.
         $invite->contract
-            ->users()
+            ->members()
             ->syncWithoutDetaching([
                 $user->id => [
                     'role'          => $invite->role,
@@ -145,6 +145,40 @@ class InviteController extends Controller
         ]);
     }
 
+    /**
+     * PATCH /api/invites/{id}
+     */
+    public function update(Request $request, $id)
+    {
+        $invite = Invite::findOrFail($id);
+
+        $data = $request->validate([
+            'role'       => ['required','in:submitter,supervisor'],
+            'start_date' => 'nullable|date',
+            'due_date'   => 'nullable|date',
+            'supervisor_id' => 'nullable|integer|exists:users,id',
+        ]);
+
+        $invite->update($data);
+
+        return response()->json([
+            'message' => 'Invite updated',
+            'invite'  => $invite->only(['id','email','role','start_date','due_date','supervisor_id','consumed']),
+        ], 200);
+    }
+
+    /**
+     * DELETE /api/invites/{id}
+     */
+    public function destroy($id)
+    {
+        $invite = Invite::findOrFail($id);
+        $invite->delete();
+
+        return response()->json([
+            'message' => 'Invite removed',
+        ], 200);
+    }
 
     public function listByContract($contractId)
     {

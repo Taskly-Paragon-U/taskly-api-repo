@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Contract;
-use Illuminate\Support\Str;         
+use App\Models\User;
+use Illuminate\Support\Str;
 
 class ContractController extends Controller
 {
@@ -21,7 +22,6 @@ class ContractController extends Controller
             ], 403);
         }
 
-        // ── REST OF YOUR EXISTING LOGIC ──
         $validated = $request->validate([
             'name'    => 'required|string|max:255',
             'details' => 'required|string',
@@ -44,7 +44,7 @@ class ContractController extends Controller
         ], 201);
     }
 
-     /**
+    /**
      * Get contracts where user is creator OR a member (any role).
      */
     public function index(Request $request)
@@ -62,14 +62,39 @@ class ContractController extends Controller
     }
 
     /**
-     * Show a single contract with its members (and their roles).
+     * Show a single contract with its members (including pivot data).
      */
     public function show($id)
     {
-        $contract = Contract::with('members')->findOrFail($id);
+        $contract = Contract::findOrFail($id);
+
+        // Load members with pivot data
+        $members = $contract->members()->get()->map(function ($member) {
+            // Lookup supervisor name if set
+            $supervisorName = null;
+            if ($member->pivot->supervisor_id) {
+                $supervisorUser = User::find($member->pivot->supervisor_id);
+                $supervisorName = $supervisorUser?->name;
+            }
+
+            return [
+                'id'             => $member->id,
+                'name'           => $member->name,
+                'email'          => $member->email,
+                'role'           => $member->pivot->role,
+                'supervisorName' => $supervisorName,
+                'startDate'      => $member->pivot->start_date,
+                'endDate'        => $member->pivot->due_date,
+            ];
+        });
 
         return response()->json([
-            'contract' => $contract
+            'contract' => [
+                'id'      => $contract->id,
+                'name'    => $contract->name,
+                'details' => $contract->details,
+                'members' => $members,
+            ]
         ], 200);
     }
 }
