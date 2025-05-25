@@ -15,11 +15,12 @@ class SubmittedTimesheet extends Model
 
     protected $fillable = [
         'task_id',
+        'contract_id',    // ← add this
         'user_id',
         'file_path',
-        // submitted_at is auto‐set by the DB
+        'file_name',      // ← and this
     ];
-
+    
     public function task()
     {
         return $this->belongsTo(TimesheetTask::class, 'task_id');

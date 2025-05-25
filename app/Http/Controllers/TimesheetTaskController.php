@@ -122,7 +122,7 @@ class TimesheetTaskController extends Controller
         $task->delete();
         return response()->json(['message' => 'Timesheet Task Deleted']);
     }
-
+    
     /**
      * POST /submit-timesheet
      * form-data: task_id, timesheet (file)
@@ -161,10 +161,12 @@ class TimesheetTaskController extends Controller
 
         // 6) record the submission
         $submission = SubmittedTimesheet::create([
-            'task_id'   => $task->id,
-            'user_id'   => $user->id,
-            'file_path' => $path,
-            // submitted_at uses your migration’s default timestamp
+            'task_id'     => $task->id,
+            'contract_id' => $task->contract_id,                   // ← include contract
+            'user_id'     => $user->id,
+            'file_path'   => $path,
+            'file_name'   => $request->file('timesheet')
+                                ->getClientOriginalName(),     // ← store original name
         ]);
 
         // 7) public URL
@@ -178,6 +180,7 @@ class TimesheetTaskController extends Controller
                 'user_id'      => $submission->user_id,
                 'file_path'    => $submission->file_path,
                 'file_url'     => $url,
+                'file_name'    => $submission->file_name,           // ← added
                 'submitted_at' => $submission->submitted_at->toDateTimeString(),
             ],
         ], 201);
