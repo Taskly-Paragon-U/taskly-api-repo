@@ -85,6 +85,7 @@ class ContractController extends Controller
                 'supervisorName' => $supervisorName,
                 'startDate'      => $member->pivot->start_date,
                 'endDate'        => $member->pivot->due_date,
+                
             ];
         });
 

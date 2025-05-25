@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Models\User;
-use App\Models\Invite;
 
 class Contract extends Model
 {
@@ -14,16 +12,19 @@ class Contract extends Model
 
     protected $fillable = ['user_id', 'name', 'details'];
 
-    public function members()
+    /**
+     * All members of this contract with pivot metadata.
+     */
+    public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)
-                    ->withPivot(['role','start_date','due_date','supervisor_id'])
-                    ->withTimestamps();
+        return $this
+            ->belongsToMany(User::class, 'contract_user')
+            ->withPivot('role', 'start_date', 'due_date', 'supervisor_id')
+            ->withTimestamps();
     }
 
-
     /**
-     * Shortcut: just the owner(s).
+     * Only owners of the contract.
      */
     public function owners(): BelongsToMany
     {
@@ -31,7 +32,7 @@ class Contract extends Model
     }
 
     /**
-     * Shortcut: only submitter submittors.
+     * Only submitters of the contract.
      */
     public function submitters(): BelongsToMany
     {
@@ -39,7 +40,7 @@ class Contract extends Model
     }
 
     /**
-     * Shortcut: only supervisors.
+     * Only supervisors of the contract.
      */
     public function supervisors(): BelongsToMany
     {
@@ -47,7 +48,7 @@ class Contract extends Model
     }
 
     /**
-     * Creator of the contract.
+     * Creator (owner) of the contract record.
      */
     public function creator()
     {
@@ -55,18 +56,10 @@ class Contract extends Model
     }
 
     /**
-     * Email invites
+     * Pending invites for this contract.
      */
     public function invites()
-{
-    return $this->hasMany(Invite::class);
-}
-
-    public function users()
     {
-        return $this->belongsToMany(User::class)
-                    ->withPivot('role')
-                    ->withTimestamps();
+        return $this->hasMany(Invite::class);
     }
-
 }

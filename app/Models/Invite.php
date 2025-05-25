@@ -14,6 +14,8 @@ class Invite extends Model
         'contract_id',
         'email',
         'role',
+        'start_date',
+        'due_date',
         'invited_by',
         'consumed',
     ];

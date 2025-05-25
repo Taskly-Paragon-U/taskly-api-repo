@@ -100,6 +100,8 @@ class InviteController extends Controller
             'contract_name' => $invite->contract->name,
             'email'         => $invite->email,
             'role'          => $invite->role,
+            'start_date'    => $invite->start_date,
+            'due_date'      => $invite->due_date,
         ]);
     }
 
