@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\TimesheetTaskController;
-use App\Http\Controllers\SubmittedTimesheetController;  // ← new
+use App\Http\Controllers\SubmittedTimesheetController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -39,14 +39,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch ('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'update']);
     Route::delete('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'destroy']);
     Route::post  ('/submit-timesheet', [TimesheetTaskController::class, 'submit']);
-
-    // ** new **: submitted‐timesheet endpoints
-        // … your existing submit-timesheet route …
-    // your existing routes…
-    Route::post('/submit-timesheet', [TimesheetTaskController::class, 'submit']);
-
-    // new:
     Route::get     ('/submissions',        [SubmittedTimesheetController::class, 'index']);
     Route::delete  ('/submissions/{id}',   [SubmittedTimesheetController::class, 'destroy']);
+    // Route::post('/submit-timesheet', [SubmittedTimesheetController::class, 'store']);
 
 });

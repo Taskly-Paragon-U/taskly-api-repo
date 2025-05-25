@@ -4,9 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTimesheetTasksTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         Schema::create('timesheet_tasks', function (Blueprint $table) {
             $table->id();
@@ -14,15 +17,23 @@ class CreateTimesheetTasksTable extends Migration
             $table->text('details')->nullable();
             $table->date('start_date');
             $table->date('due_date');
-            // default to 'submitter'
-            $table->enum('role',['submitter','supervisor'])->default('submitter');
+            $table->enum('role', ['submitter','supervisor'])->default('submitter');
             $table->foreignId('contract_id')->constrained()->cascadeOnDelete();
+
+            // all template fields in one place
+            $table->string('template_url')->nullable();
+            $table->string('template_file')->nullable();
+            $table->string('template_file_name')->nullable();
+
             $table->timestamps();
         });
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('timesheet_tasks');
     }
-}
+};
