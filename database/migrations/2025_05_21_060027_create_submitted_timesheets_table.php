@@ -13,17 +13,31 @@ return new class extends Migration
     {
         Schema::create('submitted_timesheets', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('task_id')
                   ->constrained('timesheet_tasks')
                   ->onDelete('cascade');
-            $table->foreignId('contract_id')  ;      
+
+            $table->foreignId('contract_id'); 
+
             $table->foreignId('user_id')
                   ->constrained('users')
                   ->onDelete('cascade');
-            
+
             $table->string('file_path');
             $table->string('file_name');
             $table->timestamp('submitted_at')->useCurrent();
+
+            // REVIEW FIELDS
+            $table->string('status')->default('pending');
+            $table->unsignedBigInteger('supervisor_id')->nullable();
+            $table->timestamp('reviewed_at')->nullable();
+
+            // Foreign key for supervisor_id
+            $table->foreign('supervisor_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('set null');
         });
     }
 
@@ -32,6 +46,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // Drop the entire table on rollback
         Schema::dropIfExists('submitted_timesheets');
     }
 };
