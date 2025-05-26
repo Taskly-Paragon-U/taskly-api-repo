@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/contracts/{id}', [ContractController::class, 'show']);
     Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
     Route::post('invites/{token}/accept',[InviteController::class,'accept']);
+    Route::patch('/contracts/{contract}/members/{user}',[ContractController::class, 'updateMember']);
+    Route::delete( '/contracts/{contract}/members/{user}',[ContractController::class, 'removeMember']);
 
     // timesheet‐task CRUD
     Route::get   ('/timesheet-tasks',  [TimesheetTaskController::class, 'index']);
@@ -42,5 +44,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get     ('/submissions',        [SubmittedTimesheetController::class, 'index']);
     Route::delete  ('/submissions/{id}',   [SubmittedTimesheetController::class, 'destroy']);
     // Route::post('/submit-timesheet', [SubmittedTimesheetController::class, 'store']);
-
+    
 });
