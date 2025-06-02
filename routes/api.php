@@ -43,6 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post  ('/submit-timesheet', [TimesheetTaskController::class, 'submit']);
     Route::get     ('/submissions',        [SubmittedTimesheetController::class, 'index']);
     Route::delete  ('/submissions/{id}',   [SubmittedTimesheetController::class, 'destroy']);
-    // Route::post('/submit-timesheet', [SubmittedTimesheetController::class, 'store']);
+
+    // timesheet status
+Route::patch('/contracts/{contract}/timesheet-tasks/{task}/submissions/{submission}', [SubmittedTimesheetController::class, 'updateStatus']
+);    // Route::post('/submit-timesheet', [SubmittedTimesheetController::class, 'store']);
     
 });
