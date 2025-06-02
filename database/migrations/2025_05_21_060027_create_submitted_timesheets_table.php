@@ -18,7 +18,9 @@ return new class extends Migration
                   ->constrained('timesheet_tasks')
                   ->onDelete('cascade');
 
-            $table->foreignId('contract_id'); 
+            $table->foreignId('contract_id')
+                  ->constrained('contracts')       // ← if you have a contracts table
+                  ->onDelete('cascade');
 
             $table->foreignId('user_id')
                   ->constrained('users')
@@ -33,7 +35,10 @@ return new class extends Migration
             $table->unsignedBigInteger('supervisor_id')->nullable();
             $table->timestamp('reviewed_at')->nullable();
 
-            // Foreign key for supervisor_id
+            // Add rejection_reason so that “rejected” can store a text reason
+            $table->string('rejection_reason')->nullable();
+
+            // Foreign key constraint for supervisor_id
             $table->foreign('supervisor_id')
                   ->references('id')
                   ->on('users')
@@ -46,7 +51,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        // Drop the entire table on rollback
         Schema::dropIfExists('submitted_timesheets');
     }
 };

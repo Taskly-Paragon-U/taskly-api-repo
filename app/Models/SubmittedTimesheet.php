@@ -22,10 +22,12 @@ class SubmittedTimesheet extends Model
         'file_name',
         'status',
         'supervisor_id',
+        'rejection_reason',
         'reviewed_at',
     ];
 
     protected $casts = [
+        'status' => 'string',
         'submitted_at' => 'datetime',
         'reviewed_at'  => 'datetime',
     ];
@@ -44,4 +46,14 @@ class SubmittedTimesheet extends Model
     {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
+    public function getStatusLabelAttribute(): string
+    {
+        return match ($this->status) {
+            'pending'  => 'Pending',
+            'approved' => 'Approved',
+            'rejected' => 'Rejected',
+            default    => ucfirst($this->status),
+        };
+    }
+
 }

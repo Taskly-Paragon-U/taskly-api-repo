@@ -52,14 +52,15 @@ class SubmittedTimesheetController extends Controller
 
             foreach ($subs as $s) {
                 $submissions[] = [
-                    'id'          => $s->id,
-                    'submitter'   => [
+                    'id'              => $s->id,
+                    'submitter'       => [
                         'id'   => $s->submitter->id,
                         'name' => $s->submitter->name,
                     ],
-                    'submittedAt' => $s->submitted_at->toDateTimeString(),
-                    'fileUrl'     => Storage::url($s->file_path),
-                    'status'      => $s->status,
+                    'submittedAt'     => $s->submitted_at->toDateTimeString(),
+                    'fileUrl'         => Storage::url($s->file_path),
+                    'status'          => $s->status,
+                    'rejectionReason' => $s->rejection_reason,
                 ];
             }
         }
@@ -101,5 +102,55 @@ class SubmittedTimesheetController extends Controller
         $s->delete();
 
         return response()->json(null, 204);
+    }
+
+    /**
+     * PATCH /api/contracts/{contract}/timesheet-tasks/{task}/submissions/{submission}
+     *
+     * Body payload:
+     * {
+     *   status: 'pending' | 'approved' | 'rejected',
+     *   rejection_reason?: string  // required if status is 'rejected'
+     * }
+     */
+    public function updateStatus(
+        Request $request,
+        int $contract,
+        int $task,
+        int $submission
+    ) {
+        // 1) Validate
+        $data = $request->validate([
+            'status'           => 'required|string|in:pending,approved,rejected',
+            'rejection_reason' => 'nullable|string|max:255',
+        ]);
+
+        // 2) Find the SubmittedTimesheet row, ensuring it matches contract_id and task_id
+        $timesheet = SubmittedTimesheet::where('id', $submission)
+            ->where('contract_id', $contract)
+            ->where('task_id', $task)
+            ->firstOrFail();
+
+        // 3) Update status + reason
+        $timesheet->status = $data['status'];
+
+        if ($data['status'] === 'rejected') {
+            // If rejecting, require or accept the reason
+            $timesheet->rejection_reason = $data['rejection_reason'] ?? null;
+        } else {
+            // If approving or reverting to pending, clear out any old reason
+            $timesheet->rejection_reason = null;
+        }
+
+        // 4) Record who reviewed it and when
+        $timesheet->supervisor_id = $request->user()->id;
+        $timesheet->reviewed_at   = now();
+
+        $timesheet->save();
+
+        // 5) Return updated submission
+        return response()->json([
+            'submission' => $timesheet,
+        ], 200);
     }
 }
