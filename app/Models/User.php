@@ -34,14 +34,16 @@ class User extends Authenticatable
     public function contracts()
     {
         return $this->belongsToMany(Contract::class)
-                    ->withPivot('role')
+                    ->withPivot(['role', 'start_date', 'due_date', 'supervisor_id', 'label'])
                     ->withTimestamps();
     }
 
     // Contracts this user was invited to (via pivot)
     public function sharedContracts()
     {
-        return $this->belongsToMany(Contract::class, 'contract_user');
+        return $this->belongsToMany(Contract::class, 'contract_user')
+            ->withPivot(['role', 'start_date', 'due_date', 'supervisor_id', 'label'])
+            ->withTimestamps();
     }
 
     // Invites sent by this user
@@ -50,4 +52,23 @@ class User extends Authenticatable
         return $this->hasMany(Invite::class, 'invited_by');
     }
     
+    /**
+     * Get all submitters supervised by this user
+     */
+    public function supervisedSubmitters()
+    {
+        return $this->belongsToMany(User::class, 'submitter_supervisor', 'supervisor_id', 'submitter_id')
+                    ->withPivot('contract_id')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Get all supervisors for this submitter
+     */
+    public function supervisors()
+    {
+        return $this->belongsToMany(User::class, 'submitter_supervisor', 'submitter_id', 'supervisor_id')
+                    ->withPivot('contract_id')
+                    ->withTimestamps();
+    }
 }

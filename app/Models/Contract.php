@@ -19,9 +19,17 @@ class Contract extends Model
     {
         return $this
             ->belongsToMany(User::class, 'contract_user')
-            ->withPivot('role', 'start_date', 'due_date', 'supervisor_id')
+            ->withPivot([
+                'role',
+                'start_date',
+                'due_date',
+                'supervisor_id',
+                'label',     
+            ])
             ->withTimestamps();
     }
+
+
 
     /**
      * Only owners of the contract.
@@ -62,4 +70,5 @@ class Contract extends Model
     {
         return $this->hasMany(Invite::class);
     }
+    
 }

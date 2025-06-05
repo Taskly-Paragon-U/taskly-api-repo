@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Contract;
 use App\Models\User;
+use App\Models\Invite;
+use App\Models\Contract;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 class ContractController extends Controller
 {
@@ -69,7 +70,16 @@ class ContractController extends Controller
         $contract = Contract::findOrFail($id);
 
         // Load members with pivot data
-        $members = $contract->members()->get()->map(function ($member) {
+        $members = $contract->members()->get()->map(function ($member) use ($contract) {
+            // Get supervisor_ids_json from invites table
+            $invite = Invite::where('email', $member->email)
+                        ->where('contract_id', $contract->id)
+                        ->where('role', $member->pivot->role)
+                        ->where('label', $member->pivot->label) 
+                        ->first();
+            
+            $supervisorIdsJson = $invite ? $invite->supervisor_ids_json : null;
+            
             // Lookup supervisor name if set
             $supervisorName = null;
             if ($member->pivot->supervisor_id) {
@@ -78,15 +88,17 @@ class ContractController extends Controller
             }
 
             return [
-                'id'             => $member->id,
-                'name'           => $member->name,
-                'email'          => $member->email,
-                'role'           => $member->pivot->role,
-                'supervisorId'   => $member->pivot->supervisor_id,  
-                'supervisorName' => $supervisorName,
-                'startDate'      => $member->pivot->start_date,
-                'endDate'        => $member->pivot->due_date,
-                
+                'id'               => $member->id,
+                'name'             => $member->name,
+                'email'            => $member->email,
+                'role'             => $member->pivot->role,
+                'supervisorId'     => $member->pivot->supervisor_id,  
+                'supervisorName'   => $supervisorName,
+                'startDate'        => $member->pivot->start_date,
+                'endDate'          => $member->pivot->due_date,
+                'label'            => $member->pivot->label,
+                'pivot_id' => $member->pivot->id,
+                'supervisor_ids_json' => $supervisorIdsJson, 
             ];
         });
 
@@ -132,6 +144,20 @@ class ContractController extends Controller
         $contract->members()->detach($user->id);
 
         return response()->json(['message' => 'Member removed'], 200);
+    }
+
+        /**
+     * GET /api/contracts/{id}/supervisors
+     * Get all supervisors for a contract
+     */
+    public function getSupervisors($id)
+    {
+        $contract = Contract::findOrFail($id);
+        
+        // Get all supervisors for this contract
+        $supervisors = $contract->supervisors()->get(['users.id', 'users.name', 'users.email']);
+        
+        return response()->json($supervisors);
     }
 
 }

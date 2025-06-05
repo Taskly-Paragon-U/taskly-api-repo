@@ -15,9 +15,9 @@ return new class extends Migration
             $table->foreignId('contract_id')->constrained()->onDelete('cascade');
             $table->string('email');
             $table->enum('role', ['submitter','supervisor']);
-            $table->date('start_date')->nullable();        // ← new
-            $table->date('due_date')->nullable();          // ← new
-            $table->foreignId('supervisor_id')             // ← new
+            $table->date('start_date')->nullable();        
+            $table->date('due_date')->nullable();          
+            $table->foreignId('supervisor_id')          
                   ->nullable()
                   ->constrained('users')
                   ->onDelete('set null');
@@ -25,6 +25,8 @@ return new class extends Migration
                   ->constrained('users')
                   ->onDelete('cascade');
             $table->boolean('consumed')->default(false);
+            $table->enum('label', ['TA','AA','Intern'])
+              ->default('TA');
             $table->timestamps();
         });
     }
