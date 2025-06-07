@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -25,8 +24,8 @@ return new class extends Migration
                   ->constrained('users')
                   ->onDelete('cascade');
             $table->boolean('consumed')->default(false);
-            $table->enum('label', ['TA','AA','Intern'])
-              ->default('TA');
+            $table->enum('label', ['TA','AA','Intern'])->nullable();
+            $table->text('labels_json')->nullable();
             $table->timestamps();
         });
     }

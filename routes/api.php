@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\TimesheetTaskController;
@@ -24,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::get('/users', [UserController::class, 'index']);
     
     Route::get('/contracts/{contract}/invites',[InviteController::class, 'listByContract']);
     Route::post('/contracts', [ContractController::class, 'store']);
