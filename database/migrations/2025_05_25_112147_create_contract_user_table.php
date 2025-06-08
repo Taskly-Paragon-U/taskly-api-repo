@@ -16,10 +16,9 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('due_date')->nullable();
             $table->foreignId('supervisor_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->enum('label', ['TA','AA','Intern'])->default('TA');
+            $table->enum('label', ['TA','AA','Intern'])->nullable(); // Make nullable instead of default
             $table->timestamps();
         });
-
     }
 
     public function down(): void

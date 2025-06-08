@@ -33,9 +33,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/contracts/{id}', [ContractController::class, 'show']);
     Route::post('/contracts/{id}/invite', [InviteController::class, 'invite']);
     Route::post('invites/{token}/accept',[InviteController::class,'accept']);
-    Route::patch('/contracts/{contract}/members/{user}',action: [ContractController::class, 'updateMember']);
-    Route::delete( '/contracts/{contract}/members/{user}',[ContractController::class, 'removeMember']);
+    
+    // FIXED: Changed from {contract}/{user} to {contractId}/{userId} to match your frontend
+    Route::patch('/contracts/{contractId}/members/{userId}', [ContractController::class, 'updateMember']);
+    Route::delete('/contracts/{contractId}/members/{userId}', [ContractController::class, 'removeMember']);
+    
     Route::get('/contracts/{id}/supervisors', [ContractController::class, 'getSupervisors']);
+    
     // timesheet‐task CRUD
     Route::get   ('/timesheet-tasks',  [TimesheetTaskController::class, 'index']);
     Route::get   ('/timesheet-tasks/{task}', [TimesheetTaskController::class, 'show']);
@@ -47,7 +51,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete  ('/submissions/{id}',   [SubmittedTimesheetController::class, 'destroy']);
 
     // timesheet status
-Route::patch('/contracts/{contract}/timesheet-tasks/{task}/submissions/{submission}', [SubmittedTimesheetController::class, 'updateStatus']
-);    // Route::post('/submit-timesheet', [SubmittedTimesheetController::class, 'store']);
-    
+    Route::patch('/contracts/{contract}/timesheet-tasks/{task}/submissions/{submission}', [SubmittedTimesheetController::class, 'updateStatus']);
 });
