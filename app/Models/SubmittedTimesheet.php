@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SubmittedTimesheet extends Model
 {
     protected $table = 'submitted_timesheets';
 
-    // Use submitted_at as the created timestamp, no updated timestamp
     public $timestamps = true;
     const CREATED_AT = 'submitted_at';
     const UPDATED_AT = null;
@@ -21,7 +21,7 @@ class SubmittedTimesheet extends Model
         'file_path',
         'file_name',
         'status',
-        'supervisor_id',
+        'supervisor_id', // Keep for backward compatibility
         'rejection_reason',
         'reviewed_at',
     ];
@@ -46,6 +46,12 @@ class SubmittedTimesheet extends Model
     {
         return $this->belongsTo(User::class, 'supervisor_id');
     }
+
+    public function supervisorApprovals(): HasMany
+    {
+        return $this->hasMany(SupervisorApproval::class);
+    }
+
     public function getStatusLabelAttribute(): string
     {
         return match ($this->status) {
@@ -56,4 +62,9 @@ class SubmittedTimesheet extends Model
         };
     }
 
+    public function supervisorAssignments()
+    {
+        return $this->hasMany(SubmitterSupervisor::class, 'submitter_id', 'user_id')
+                    ->where('contract_id', $this->contract_id);
+    }
 }
