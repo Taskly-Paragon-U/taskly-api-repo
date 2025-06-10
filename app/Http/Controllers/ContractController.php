@@ -54,9 +54,11 @@ class ContractController extends Controller
     {
         $user = $request->user();
 
-        $contracts = Contract::where('user_id', $user->id)
-            ->orWhereHas('members', function ($q) use ($user) {
-                $q->where('user_id', $user->id);
+        // Modified query to include the user's role for each contract
+        $contracts = Contract::select('contracts.*', 'contract_user.role as userRole')
+            ->join('contract_user', function($join) use ($user) {
+                $join->on('contracts.id', '=', 'contract_user.contract_id')
+                    ->where('contract_user.user_id', '=', $user->id);
             })
             ->latest()
             ->get();
@@ -326,4 +328,6 @@ class ContractController extends Controller
         
         return response()->json($supervisors);
     }
+
+    
 }
