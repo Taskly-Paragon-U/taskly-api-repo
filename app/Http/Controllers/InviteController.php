@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InviteContract;
 use App\Models\SubmitterSupervisor;
+use Illuminate\Support\Facades\Log;
 
 class InviteController extends Controller
 {
@@ -34,37 +35,62 @@ class InviteController extends Controller
         $user = $request->user();
         $contract = Contract::findOrFail($contractId);
 
-        if (!$contract->owners->contains($user->id)) {
-            return response()->json(['message' => 'Forbidden'], 403);
+        // Check if user has permission to invite
+        $isOwner = $contract->members()
+            ->where('user_id', $user->id)
+            ->wherePivot('role', 'owner')
+            ->exists();
+
+        if (!$isOwner) {
+            return response()->json(['message' => 'Forbidden - Only contract owners can invite members'], 403);
         }
 
         $results = [];
 
         if ($data['role'] === 'supervisor') {
             foreach ($data['emails'] as $email) {
-                if ($invitee = User::where('email', $email)->first()) {
-                    $existingEntry = \DB::table('contract_user')
-                        ->where('contract_id', $contract->id)
+                Log::info("Processing supervisor invite for email: {$email}");
+                
+                // Check if user already exists
+                $invitee = User::where('email', $email)->first();
+                
+                if ($invitee) {
+                    Log::info("User exists with ID: {$invitee->id}");
+                    
+                    // Check if already a member of this contract
+                    $existingMembership = $contract->members()
                         ->where('user_id', $invitee->id)
-                        ->where('role', 'supervisor')
-                        ->exists();
+                        ->first();
 
-                    if (!$existingEntry) {
-                        \DB::table('contract_user')->insert([
-                            'contract_id' => $contract->id,
-                            'user_id' => $invitee->id,
+                    if ($existingMembership) {
+                        // Update their role to supervisor if they're not already
+                        if ($existingMembership->pivot->role !== 'supervisor') {
+                            $contract->members()->updateExistingPivot($invitee->id, [
+                                'role' => 'supervisor',
+                                'updated_at' => now(),
+                            ]);
+                            Log::info("Updated existing member {$invitee->id} to supervisor role");
+                        }
+                    } else {
+                        // Add them as a new supervisor
+                        $contract->members()->attach($invitee->id, [
                             'role' => 'supervisor',
                             'created_at' => now(),
                             'updated_at' => now(),
                         ]);
+                        Log::info("Added new supervisor member {$invitee->id}");
                     }
 
                     $results[] = [
                         'email' => $email,
                         'status' => 'attached',
                         'role' => 'supervisor',
+                        'user_id' => $invitee->id,
                     ];
                 } else {
+                    // User doesn't exist, create invite
+                    Log::info("User doesn't exist, creating invite for: {$email}");
+                    
                     $invite = Invite::create([
                         'token' => Str::uuid(),
                         'contract_id' => $contract->id,
@@ -73,17 +99,38 @@ class InviteController extends Controller
                         'invited_by' => $user->id,
                     ]);
 
-                    Mail::to($email)->send(new InviteContract($invite));
+                    // Send email invite
+                    try {
+                        Mail::to($email)->send(new InviteContract($invite));
+                        Log::info("Email sent successfully to: {$email}");
+                    } catch (\Exception $e) {
+                        Log::error("Failed to send email to {$email}: " . $e->getMessage());
+                    }
 
                     $results[] = [
                         'email' => $email,
                         'status' => 'invited',
                         'role' => 'supervisor',
+                        'invite_id' => $invite->id,
                     ];
                 }
             }
         } else {
+            // Handle submitter invitations
             $submitters = $data['submitters'] ?? [];
+            
+            // If no submitters array provided, create simple submitter invites
+            if (empty($submitters)) {
+                foreach ($data['emails'] as $email) {
+                    $submitters[] = [
+                        'email' => $email,
+                        'label' => null,
+                        'supervisor_ids' => [],
+                        'start_date' => null,
+                        'end_date' => null,
+                    ];
+                }
+            }
             
             foreach ($submitters as $submitterData) {
                 $email = $submitterData['email'];
@@ -92,18 +139,21 @@ class InviteController extends Controller
                 $startDate = $submitterData['start_date'] ?? null;
                 $endDate = $submitterData['end_date'] ?? null;
 
-                if ($invitee = User::where('email', $email)->first()) {
-                    $existingEntry = \DB::table('contract_user')
-                        ->where('contract_id', $contract->id)
-                        ->where('user_id', $invitee->id)
-                        ->where('role', 'submitter')
-                        ->where('label', $label)
-                        ->exists();
+                Log::info("Processing submitter invite for email: {$email}");
 
-                    if (!$existingEntry) {
-                        \DB::table('contract_user')->insert([
-                            'contract_id' => $contract->id,
-                            'user_id' => $invitee->id,
+                $invitee = User::where('email', $email)->first();
+                
+                if ($invitee) {
+                    Log::info("Submitter user exists with ID: {$invitee->id}");
+                    
+                    // Check if already a member
+                    $existingMembership = $contract->members()
+                        ->where('user_id', $invitee->id)
+                        ->first();
+
+                    if (!$existingMembership) {
+                        // Add as new submitter
+                        $contract->members()->attach($invitee->id, [
                             'role' => 'submitter',
                             'label' => $label,
                             'start_date' => $startDate,
@@ -112,10 +162,13 @@ class InviteController extends Controller
                             'created_at' => now(),
                             'updated_at' => now(),
                         ]);
-                    }
-
-                    if (!empty($supervisorIds)) {
-                        $this->attachSubmitterToSupervisors($contract->id, $invitee->id, $supervisorIds);
+                        
+                        // Handle multiple supervisors
+                        if (!empty($supervisorIds)) {
+                            $this->attachSubmitterToSupervisors($contract->id, $invitee->id, $supervisorIds);
+                        }
+                        
+                        Log::info("Added new submitter member {$invitee->id}");
                     }
 
                     $results[] = [
@@ -123,8 +176,12 @@ class InviteController extends Controller
                         'status' => 'attached',
                         'role' => 'submitter',
                         'label' => $label,
+                        'user_id' => $invitee->id,
                     ];
                 } else {
+                    // Create invite for non-existing user
+                    Log::info("Submitter user doesn't exist, creating invite for: {$email}");
+                    
                     $invite = Invite::create([
                         'token' => Str::uuid(),
                         'contract_id' => $contract->id,
@@ -137,17 +194,25 @@ class InviteController extends Controller
                         'supervisor_ids_json' => !empty($supervisorIds) ? json_encode($supervisorIds) : null,
                     ]);
 
-                    Mail::to($email)->send(new InviteContract($invite));
+                    try {
+                        Mail::to($email)->send(new InviteContract($invite));
+                        Log::info("Email sent successfully to: {$email}");
+                    } catch (\Exception $e) {
+                        Log::error("Failed to send email to {$email}: " . $e->getMessage());
+                    }
 
                     $results[] = [
                         'email' => $email,
                         'status' => 'invited',
                         'role' => 'submitter',
                         'label' => $label,
+                        'invite_id' => $invite->id,
                     ];
                 }
             }
         }
+
+        Log::info("Invite processing completed", ['results' => $results]);
 
         return response()->json([
             'message' => 'Invites processed successfully',
@@ -192,38 +257,63 @@ class InviteController extends Controller
                         ->where('consumed', false)
                         ->firstOrFail();
 
+        Log::info("User {$user->id} accepting invite {$invite->id} for role {$invite->role}");
+
         if ($user->email !== $invite->email) {
             return response()->json([
                 'message' => 'This invitation was sent to '.$invite->email,
             ], 403);
         }
 
-        $existingEntry = \DB::table('contract_user')
-            ->where('contract_id', $invite->contract_id)
-            ->where('user_id', $user->id)
-            ->where('role', $invite->role)
-            ->exists();
+        $contract = Contract::findOrFail($invite->contract_id);
 
-        if (!$existingEntry) {
-            \DB::table('contract_user')->insert([
-                'contract_id' => $invite->contract_id,
-                'user_id' => $user->id,
+        // Check if already a member of this contract
+        $existingMembership = $contract->members()
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$existingMembership) {
+            // Add as new member
+            $contract->members()->attach($user->id, [
                 'role' => $invite->role,
                 'start_date' => $invite->start_date,
                 'due_date' => $invite->due_date,
                 'label' => $invite->label,
+                'supervisor_id' => null, // Will be set below if needed
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+            
+            Log::info("Added user {$user->id} as {$invite->role} to contract {$contract->id}");
+        } else {
+            // Update existing membership if role is different
+            if ($existingMembership->pivot->role !== $invite->role) {
+                $contract->members()->updateExistingPivot($user->id, [
+                    'role' => $invite->role,
+                    'start_date' => $invite->start_date,
+                    'due_date' => $invite->due_date,
+                    'label' => $invite->label,
+                    'updated_at' => now(),
+                ]);
+                
+                Log::info("Updated user {$user->id} role to {$invite->role} in contract {$contract->id}");
+            }
         }
 
+        // Handle supervisor relationships for submitters
         if ($invite->role === 'submitter' && !empty($invite->supervisor_ids_json)) {
             $supervisorIds = json_decode($invite->supervisor_ids_json, true);
-            $this->attachSubmitterToSupervisors($invite->contract_id, $user->id, $supervisorIds);
+            if ($supervisorIds) {
+                $this->attachSubmitterToSupervisors($invite->contract_id, $user->id, $supervisorIds);
+                Log::info("Attached submitter {$user->id} to supervisors: " . implode(', ', $supervisorIds));
+            }
         }
 
+        // Mark invite as consumed
         $invite->consumed = true;
         $invite->save();
+
+        Log::info("Invite {$invite->id} marked as consumed");
 
         return response()->json([
             'message' => 'Invitation accepted successfully',
@@ -250,10 +340,12 @@ class InviteController extends Controller
      */
     private function attachSubmitterToSupervisors($contractId, $submitterId, $supervisorIds)
     {
+        // Remove existing relationships
         SubmitterSupervisor::where('contract_id', $contractId)
                            ->where('submitter_id', $submitterId)
                            ->delete();
 
+        // Create new relationships
         foreach ($supervisorIds as $supervisorId) {
             SubmitterSupervisor::create([
                 'contract_id' => $contractId,
