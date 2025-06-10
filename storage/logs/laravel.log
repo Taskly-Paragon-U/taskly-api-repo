@@ -184,3 +184,38 @@
 [2025-06-08 15:18:00] local.INFO: Processing submitter invite for email: hheadamgelly@gmail.com  
 [2025-06-08 15:18:00] local.INFO: Submitter user exists with ID: 5  
 [2025-06-08 15:18:00] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"attached","role":"submitter","label":"TA","user_id":5}]} 
+[2025-06-09 14:13:15] local.INFO: Processing submitter invite for email: hheadamgelly@gmail.com  
+[2025-06-09 14:13:15] local.INFO: Submitter user doesn't exist, creating invite for: hheadamgelly@gmail.com  
+[2025-06-09 14:13:22] local.INFO: Email sent successfully to: hheadamgelly@gmail.com  
+[2025-06-09 14:13:22] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"invited","role":"submitter","label":"TA","invite_id":1}]} 
+[2025-06-09 14:13:40] local.INFO: Processing supervisor invite for email: jullynay10a@gmail.com  
+[2025-06-09 14:13:40] local.INFO: User doesn't exist, creating invite for: jullynay10a@gmail.com  
+[2025-06-09 14:13:47] local.INFO: Email sent successfully to: jullynay10a@gmail.com  
+[2025-06-09 14:13:47] local.INFO: Invite processing completed {"results":[{"email":"jullynay10a@gmail.com","status":"invited","role":"supervisor","invite_id":2}]} 
+[2025-06-09 14:14:20] local.INFO: Processing supervisor invite for email: jullynay10@gmail.com  
+[2025-06-09 14:14:20] local.INFO: User exists with ID: 2  
+[2025-06-09 14:14:20] local.INFO: Added new supervisor member 2  
+[2025-06-09 14:14:20] local.INFO: Invite processing completed {"results":[{"email":"jullynay10@gmail.com","status":"attached","role":"supervisor","user_id":2}]} 
+[2025-06-09 14:15:22] local.INFO: Processing supervisor invite for email: kanoldvyryr@gmail.com  
+[2025-06-09 14:15:22] local.INFO: User doesn't exist, creating invite for: kanoldvyryr@gmail.com  
+[2025-06-09 14:15:29] local.INFO: Email sent successfully to: kanoldvyryr@gmail.com  
+[2025-06-09 14:15:29] local.INFO: Invite processing completed {"results":[{"email":"kanoldvyryr@gmail.com","status":"invited","role":"supervisor","invite_id":3}]} 
+[2025-06-09 14:16:48] local.INFO: Processing supervisor invite for email: kvyry@paragoniu.edu.kh  
+[2025-06-09 14:16:48] local.INFO: User exists with ID: 4  
+[2025-06-09 14:16:48] local.INFO: Added new supervisor member 4  
+[2025-06-09 14:16:48] local.INFO: Invite processing completed {"results":[{"email":"kvyry@paragoniu.edu.kh","status":"attached","role":"supervisor","user_id":4}]} 
+[2025-06-10 04:45:34] local.INFO: Processing supervisor invite for email: hheadamgelly@gmail.com  
+[2025-06-10 04:45:34] local.INFO: User exists with ID: 3  
+[2025-06-10 04:45:34] local.INFO: Added new supervisor member 3  
+[2025-06-10 04:45:34] local.INFO: Processing supervisor invite for email: jullynay10@gmail.com  
+[2025-06-10 04:45:34] local.INFO: User exists with ID: 2  
+[2025-06-10 04:45:34] local.INFO: Added new supervisor member 2  
+[2025-06-10 04:45:34] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"attached","role":"supervisor","user_id":3},{"email":"jullynay10@gmail.com","status":"attached","role":"supervisor","user_id":2}]} 
+[2025-06-10 04:46:14] local.INFO: Processing submitter invite for email: hhuy@paragoniu.edu.kh  
+[2025-06-10 04:46:14] local.INFO: Submitter user exists with ID: 1  
+[2025-06-10 04:46:14] local.INFO: Added new submitter member 1  
+[2025-06-10 04:46:14] local.INFO: Invite processing completed {"results":[{"email":"hhuy@paragoniu.edu.kh","status":"attached","role":"submitter","label":"TA","user_id":1}]} 
+[2025-06-10 05:57:53] local.INFO: Processing submitter invite for email: vyrykanold@gmail.com  
+[2025-06-10 05:57:53] local.INFO: Submitter user doesn't exist, creating invite for: vyrykanold@gmail.com  
+[2025-06-10 05:57:59] local.INFO: Email sent successfully to: vyrykanold@gmail.com  
+[2025-06-10 05:57:59] local.INFO: Invite processing completed {"results":[{"email":"vyrykanold@gmail.com","status":"invited","role":"submitter","label":"AA","invite_id":4}]} 
