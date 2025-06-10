@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\FileDownloadController;
 use App\Http\Controllers\TimesheetTaskController;
 use App\Http\Controllers\SubmittedTimesheetController; 
 
@@ -50,6 +51,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post  ('/submit-timesheet', [TimesheetTaskController::class, 'submit']);
     Route::get     ('/submissions',        [SubmittedTimesheetController::class, 'index']);
     Route::delete  ('/submissions/{id}',   [SubmittedTimesheetController::class, 'destroy']);
+
+    // For file download
+    Route::get('downloads/file/{id}', [App\Http\Controllers\FileDownloadController::class, 'downloadFile']);
+    Route::get('downloads/task/{taskId}', [App\Http\Controllers\FileDownloadController::class, 'downloadTaskFiles']);
+    // Add this to routes/api.php for testing purposes
+    Route::get('test-files', function() {
+        $files = Storage::files('submitted_timesheets');
+        return response()->json([
+            'files' => $files,
+            'storage_path' => storage_path('app/submitted_timesheets')
+        ]);
+    });
 
     // timesheet status
     Route::patch('/contracts/{contract}/timesheet-tasks/{task}/submissions/{submission}', [SubmittedTimesheetController::class, 'updateStatus']);

@@ -1,221 +1,64 @@
-[2025-06-08 14:01:55] local.ERROR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'taskly.supervisor_approvals' doesn't exist (Connection: mysql, SQL: select * from `supervisor_approvals` where `supervisor_approvals`.`submitted_timesheet_id` in (2)) {"userId":4,"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S02): SQLSTATE[42S02]: Base table or view not found: 1146 Table 'taskly.supervisor_approvals' doesn't exist (Connection: mysql, SQL: select * from `supervisor_approvals` where `supervisor_approvals`.`submitted_timesheet_id` in (2)) at D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:829)
-[stacktrace]
-#0 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
-#1 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(414): Illuminate\\Database\\Connection->run('select * from `...', Array, Object(Closure))
-#2 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2913): Illuminate\\Database\\Connection->select('select * from `...', Array, true)
-#3 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2902): Illuminate\\Database\\Query\\Builder->runSelect()
-#4 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3456): Illuminate\\Database\\Query\\Builder->{closure:Illuminate\\Database\\Query\\Builder::get():2901}()
-#5 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2901): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
-#6 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(739): Illuminate\\Database\\Query\\Builder->get(Array)
-#7 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(723): Illuminate\\Database\\Eloquent\\Builder->getModels(Array)
-#8 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Relations\\Relation.php(203): Illuminate\\Database\\Eloquent\\Builder->get(Array)
-#9 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Relations\\Relation.php(166): Illuminate\\Database\\Eloquent\\Relations\\Relation->get()
-#10 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(787): Illuminate\\Database\\Eloquent\\Relations\\Relation->getEager()
-#11 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(756): Illuminate\\Database\\Eloquent\\Builder->eagerLoadRelation(Array, 'supervisorAppro...', Object(Closure))
-#12 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(724): Illuminate\\Database\\Eloquent\\Builder->eagerLoadRelations(Array)
-#13 D:\\Taskly\\taskly-api-repo\\app\\Http\\Controllers\\SubmittedTimesheetController.php(43): Illuminate\\Database\\Eloquent\\Builder->get()
-#14 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php(54): App\\Http\\Controllers\\SubmittedTimesheetController->index(Object(Illuminate\\Http\\Request))
-#15 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction('index', Array)
-#16 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\SubmittedTimesheetController), 'index')
-#17 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(205): Illuminate\\Routing\\Route->runController()
-#18 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(806): Illuminate\\Routing\\Route->run()
-#19 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->{closure:Illuminate\\Routing\\Router::runRouteWithinStack():805}(Object(Illuminate\\Http\\Request))
-#20 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}(Object(Illuminate\\Http\\Request))
-#21 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#22 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php(159): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#23 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php(125): Illuminate\\Routing\\Middleware\\ThrottleRequests->handleRequest(Object(Illuminate\\Http\\Request), Object(Closure), Array)
-#24 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php(87): Illuminate\\Routing\\Middleware\\ThrottleRequests->handleRequestUsingNamedLimiter(Object(Illuminate\\Http\\Request), Object(Closure), 'api', Object(Closure))
-#25 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\ThrottleRequests->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'api')
-#26 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(57): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#27 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'sanctum')
-#28 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\sanctum\\src\\Http\\Middleware\\EnsureFrontendRequestsAreStateful.php(25): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#29 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful->{closure:Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful::handle():24}(Object(Illuminate\\Http\\Request))
-#30 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}(Object(Illuminate\\Http\\Request))
-#31 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\sanctum\\src\\Http\\Middleware\\EnsureFrontendRequestsAreStateful.php(24): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
-#32 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#33 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#34 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
-#35 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
-#36 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
-#37 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
-#38 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
-#39 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->{closure:Illuminate\\Foundation\\Http\\Kernel::dispatchToRouter():197}(Object(Illuminate\\Http\\Request))
-#40 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}(Object(Illuminate\\Http\\Request))
-#41 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#42 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#43 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#44 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#45 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#46 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#47 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#48 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(99): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#49 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#50 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(62): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#51 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#52 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#53 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#54 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#55 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
-#56 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
-#57 D:\\Taskly\\taskly-api-repo\\public\\index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
-#58 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('D:\\\\Taskly\\\\taskl...')
-#59 {main}
-
-[previous exception] [object] (PDOException(code: 42S02): SQLSTATE[42S02]: Base table or view not found: 1146 Table 'taskly.supervisor_approvals' doesn't exist at D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:423)
-[stacktrace]
-#0 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(423): PDO->prepare('select * from `...')
-#1 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(816): Illuminate\\Database\\Connection->{closure:Illuminate\\Database\\Connection::select():414}('select * from `...', Array)
-#2 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
-#3 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(414): Illuminate\\Database\\Connection->run('select * from `...', Array, Object(Closure))
-#4 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2913): Illuminate\\Database\\Connection->select('select * from `...', Array, true)
-#5 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2902): Illuminate\\Database\\Query\\Builder->runSelect()
-#6 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3456): Illuminate\\Database\\Query\\Builder->{closure:Illuminate\\Database\\Query\\Builder::get():2901}()
-#7 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2901): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
-#8 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(739): Illuminate\\Database\\Query\\Builder->get(Array)
-#9 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(723): Illuminate\\Database\\Eloquent\\Builder->getModels(Array)
-#10 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Relations\\Relation.php(203): Illuminate\\Database\\Eloquent\\Builder->get(Array)
-#11 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Relations\\Relation.php(166): Illuminate\\Database\\Eloquent\\Relations\\Relation->get()
-#12 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(787): Illuminate\\Database\\Eloquent\\Relations\\Relation->getEager()
-#13 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(756): Illuminate\\Database\\Eloquent\\Builder->eagerLoadRelation(Array, 'supervisorAppro...', Object(Closure))
-#14 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(724): Illuminate\\Database\\Eloquent\\Builder->eagerLoadRelations(Array)
-#15 D:\\Taskly\\taskly-api-repo\\app\\Http\\Controllers\\SubmittedTimesheetController.php(43): Illuminate\\Database\\Eloquent\\Builder->get()
-#16 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php(54): App\\Http\\Controllers\\SubmittedTimesheetController->index(Object(Illuminate\\Http\\Request))
-#17 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction('index', Array)
-#18 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\SubmittedTimesheetController), 'index')
-#19 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(205): Illuminate\\Routing\\Route->runController()
-#20 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(806): Illuminate\\Routing\\Route->run()
-#21 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->{closure:Illuminate\\Routing\\Router::runRouteWithinStack():805}(Object(Illuminate\\Http\\Request))
-#22 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}(Object(Illuminate\\Http\\Request))
-#23 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#24 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php(159): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#25 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php(125): Illuminate\\Routing\\Middleware\\ThrottleRequests->handleRequest(Object(Illuminate\\Http\\Request), Object(Closure), Array)
-#26 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php(87): Illuminate\\Routing\\Middleware\\ThrottleRequests->handleRequestUsingNamedLimiter(Object(Illuminate\\Http\\Request), Object(Closure), 'api', Object(Closure))
-#27 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\ThrottleRequests->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'api')
-#28 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(57): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#29 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'sanctum')
-#30 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\sanctum\\src\\Http\\Middleware\\EnsureFrontendRequestsAreStateful.php(25): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#31 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful->{closure:Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful::handle():24}(Object(Illuminate\\Http\\Request))
-#32 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}(Object(Illuminate\\Http\\Request))
-#33 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\sanctum\\src\\Http\\Middleware\\EnsureFrontendRequestsAreStateful.php(24): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
-#34 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Laravel\\Sanctum\\Http\\Middleware\\EnsureFrontendRequestsAreStateful->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#35 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#36 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
-#37 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
-#38 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
-#39 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
-#40 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
-#41 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->{closure:Illuminate\\Foundation\\Http\\Kernel::dispatchToRouter():197}(Object(Illuminate\\Http\\Request))
-#42 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}(Object(Illuminate\\Http\\Request))
-#43 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#44 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#45 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#46 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#47 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#48 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#49 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#50 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(99): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#51 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#52 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(62): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#53 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#54 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#55 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#56 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#57 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
-#58 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
-#59 D:\\Taskly\\taskly-api-repo\\public\\index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
-#60 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('D:\\\\Taskly\\\\taskl...')
-#61 {main}
-"} 
-[2025-06-08 14:28:00] local.ERROR: Unmatched '}' {"exception":"[object] (ParseError(code: 0): Unmatched '}' at D:\\Taskly\\taskly-api-repo\\app\\Http\\Controllers\\SubmittedTimesheetController.php:327)
-[stacktrace]
-#0 D:\\Taskly\\taskly-api-repo\\vendor\\composer\\ClassLoader.php(427): {closure:Composer\\Autoload\\ClassLoader::initializeIncludeClosure():575}('D:\\\\Taskly\\\\taskl...')
-#1 [internal function]: Composer\\Autoload\\ClassLoader->loadClass('App\\\\Http\\\\Contro...')
-#2 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(1096): is_a('App\\\\Http\\\\Contro...', 'Illuminate\\\\Rout...', true)
-#3 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(1035): Illuminate\\Routing\\Route->controllerMiddleware()
-#4 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(818): Illuminate\\Routing\\Route->gatherMiddleware()
-#5 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(800): Illuminate\\Routing\\Router->gatherRouteMiddleware(Object(Illuminate\\Routing\\Route))
-#6 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
-#7 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
-#8 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
-#9 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
-#10 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->{closure:Illuminate\\Foundation\\Http\\Kernel::dispatchToRouter():197}(Object(Illuminate\\Http\\Request))
-#11 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}(Object(Illuminate\\Http\\Request))
-#12 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#13 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#14 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#15 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#16 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#17 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#18 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#19 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(99): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#20 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#21 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(62): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#22 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#23 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#24 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
-#25 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}(Object(Illuminate\\Http\\Request))
-#26 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
-#27 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
-#28 D:\\Taskly\\taskly-api-repo\\public\\index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
-#29 D:\\Taskly\\taskly-api-repo\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('D:\\\\Taskly\\\\taskl...')
-#30 {main}
-"} 
-[2025-06-08 15:01:51] local.INFO: Processing submitter invite for email: hheadamgelly@gmail.com  
-[2025-06-08 15:01:51] local.INFO: Submitter user doesn't exist, creating invite for: hheadamgelly@gmail.com  
-[2025-06-08 15:02:20] local.ERROR: Maximum execution time of 30 seconds exceeded {"userId":1,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Maximum execution time of 30 seconds exceeded at D:\\Taskly\\taskly-api-repo\\vendor\\symfony\\mailer\\Transport\\Smtp\\Stream\\AbstractStream.php:81)
-[stacktrace]
-#0 {main}
-"} 
-[2025-06-08 15:03:28] local.INFO: Processing submitter invite for email: hheadamgelly@gmail.com  
-[2025-06-08 15:03:28] local.INFO: Submitter user exists with ID: 5  
-[2025-06-08 15:03:28] local.INFO: Added new submitter member 5  
-[2025-06-08 15:03:28] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"attached","role":"submitter","label":"TA","user_id":5}]} 
-[2025-06-08 15:11:08] local.INFO: Processing submitter invite for email: headamgelly@gmail.com  
-[2025-06-08 15:11:08] local.INFO: Submitter user doesn't exist, creating invite for: headamgelly@gmail.com  
-[2025-06-08 15:11:15] local.INFO: Email sent successfully to: headamgelly@gmail.com  
-[2025-06-08 15:11:15] local.INFO: Invite processing completed {"results":[{"email":"headamgelly@gmail.com","status":"invited","role":"submitter","label":"AA","invite_id":8}]} 
-[2025-06-08 15:12:46] local.INFO: Processing submitter invite for email: hheadamgelly@gmail.com  
-[2025-06-08 15:12:46] local.INFO: Submitter user exists with ID: 5  
-[2025-06-08 15:12:46] local.INFO: Added new submitter member 5  
-[2025-06-08 15:12:46] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"attached","role":"submitter","label":"AA","user_id":5}]} 
-[2025-06-08 15:13:20] local.INFO: Processing submitter invite for email: hheadamgelly@gmail.com  
-[2025-06-08 15:13:20] local.INFO: Submitter user exists with ID: 5  
-[2025-06-08 15:13:20] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"attached","role":"submitter","label":"TA","user_id":5}]} 
-[2025-06-08 15:18:00] local.INFO: Processing submitter invite for email: hheadamgelly@gmail.com  
-[2025-06-08 15:18:00] local.INFO: Submitter user exists with ID: 5  
-[2025-06-08 15:18:00] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"attached","role":"submitter","label":"TA","user_id":5}]} 
-[2025-06-09 14:13:15] local.INFO: Processing submitter invite for email: hheadamgelly@gmail.com  
-[2025-06-09 14:13:15] local.INFO: Submitter user doesn't exist, creating invite for: hheadamgelly@gmail.com  
-[2025-06-09 14:13:22] local.INFO: Email sent successfully to: hheadamgelly@gmail.com  
-[2025-06-09 14:13:22] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"invited","role":"submitter","label":"TA","invite_id":1}]} 
-[2025-06-09 14:13:40] local.INFO: Processing supervisor invite for email: jullynay10a@gmail.com  
-[2025-06-09 14:13:40] local.INFO: User doesn't exist, creating invite for: jullynay10a@gmail.com  
-[2025-06-09 14:13:47] local.INFO: Email sent successfully to: jullynay10a@gmail.com  
-[2025-06-09 14:13:47] local.INFO: Invite processing completed {"results":[{"email":"jullynay10a@gmail.com","status":"invited","role":"supervisor","invite_id":2}]} 
-[2025-06-09 14:14:20] local.INFO: Processing supervisor invite for email: jullynay10@gmail.com  
-[2025-06-09 14:14:20] local.INFO: User exists with ID: 2  
-[2025-06-09 14:14:20] local.INFO: Added new supervisor member 2  
-[2025-06-09 14:14:20] local.INFO: Invite processing completed {"results":[{"email":"jullynay10@gmail.com","status":"attached","role":"supervisor","user_id":2}]} 
-[2025-06-09 14:15:22] local.INFO: Processing supervisor invite for email: kanoldvyryr@gmail.com  
-[2025-06-09 14:15:22] local.INFO: User doesn't exist, creating invite for: kanoldvyryr@gmail.com  
-[2025-06-09 14:15:29] local.INFO: Email sent successfully to: kanoldvyryr@gmail.com  
-[2025-06-09 14:15:29] local.INFO: Invite processing completed {"results":[{"email":"kanoldvyryr@gmail.com","status":"invited","role":"supervisor","invite_id":3}]} 
-[2025-06-09 14:16:48] local.INFO: Processing supervisor invite for email: kvyry@paragoniu.edu.kh  
-[2025-06-09 14:16:48] local.INFO: User exists with ID: 4  
-[2025-06-09 14:16:48] local.INFO: Added new supervisor member 4  
-[2025-06-09 14:16:48] local.INFO: Invite processing completed {"results":[{"email":"kvyry@paragoniu.edu.kh","status":"attached","role":"supervisor","user_id":4}]} 
-[2025-06-10 04:45:34] local.INFO: Processing supervisor invite for email: hheadamgelly@gmail.com  
-[2025-06-10 04:45:34] local.INFO: User exists with ID: 3  
-[2025-06-10 04:45:34] local.INFO: Added new supervisor member 3  
-[2025-06-10 04:45:34] local.INFO: Processing supervisor invite for email: jullynay10@gmail.com  
-[2025-06-10 04:45:34] local.INFO: User exists with ID: 2  
-[2025-06-10 04:45:34] local.INFO: Added new supervisor member 2  
-[2025-06-10 04:45:34] local.INFO: Invite processing completed {"results":[{"email":"hheadamgelly@gmail.com","status":"attached","role":"supervisor","user_id":3},{"email":"jullynay10@gmail.com","status":"attached","role":"supervisor","user_id":2}]} 
-[2025-06-10 04:46:14] local.INFO: Processing submitter invite for email: hhuy@paragoniu.edu.kh  
-[2025-06-10 04:46:14] local.INFO: Submitter user exists with ID: 1  
-[2025-06-10 04:46:14] local.INFO: Added new submitter member 1  
-[2025-06-10 04:46:14] local.INFO: Invite processing completed {"results":[{"email":"hhuy@paragoniu.edu.kh","status":"attached","role":"submitter","label":"TA","user_id":1}]} 
-[2025-06-10 05:57:53] local.INFO: Processing submitter invite for email: vyrykanold@gmail.com  
-[2025-06-10 05:57:53] local.INFO: Submitter user doesn't exist, creating invite for: vyrykanold@gmail.com  
-[2025-06-10 05:57:59] local.INFO: Email sent successfully to: vyrykanold@gmail.com  
-[2025-06-10 05:57:59] local.INFO: Invite processing completed {"results":[{"email":"vyrykanold@gmail.com","status":"invited","role":"submitter","label":"AA","invite_id":4}]} 
+[2025-06-10 21:35:15] local.INFO: Task 4 template info - template_file: timesheet_templates/fPy9y1M3ejCPr0rDRYR0ndod70PyLXcQCaSY1q4n.pdf, template_file_name: Activity_Report.pdf  
+[2025-06-10 21:35:15] local.INFO: Found 2 submissions for task 4  
+[2025-06-10 21:35:15] local.INFO: Creating zip file at D:\year4\FYP\Taskly\taskly-api-repo\storage\app/temp\task_4_files_1749591315.zip  
+[2025-06-10 21:35:15] local.INFO: Checking submission 4, file path: submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf, public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 21:35:15] local.INFO: File found at public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 21:35:15] local.INFO: Added file to zip: Kanold_Vy_Activity_Report.pdf  
+[2025-06-10 21:35:15] local.INFO: Checking submission 6, file path: submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf, public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 21:35:15] local.INFO: File found at public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 21:35:15] local.INFO: Added file to zip: Headangelly_Huy_Activity_Report.pdf  
+[2025-06-10 21:35:15] local.INFO: Zip file created successfully with 2 files. Size: 147972 bytes  
+[2025-06-10 21:35:42] local.INFO: Attempting to download file ID: 6, path: submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf, checking public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 21:35:42] local.INFO: File found at public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 21:36:12] local.INFO: Task 4 template info - template_file: timesheet_templates/fPy9y1M3ejCPr0rDRYR0ndod70PyLXcQCaSY1q4n.pdf, template_file_name: Activity_Report.pdf  
+[2025-06-10 21:36:12] local.INFO: Found 2 submissions for task 4  
+[2025-06-10 21:36:12] local.INFO: Creating zip file at D:\year4\FYP\Taskly\taskly-api-repo\storage\app/temp\task_4_files_1749591372.zip  
+[2025-06-10 21:36:12] local.INFO: Checking submission 4, file path: submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf, public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 21:36:12] local.INFO: File found at public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 21:36:12] local.INFO: Added file to zip: Kanold_Vy_Activity_Report.pdf  
+[2025-06-10 21:36:12] local.INFO: Checking submission 6, file path: submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf, public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 21:36:12] local.INFO: File found at public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 21:36:12] local.INFO: Added file to zip: Headangelly_Huy_Activity_Report.pdf  
+[2025-06-10 21:36:12] local.INFO: Zip file created successfully with 2 files. Size: 147972 bytes  
+[2025-06-10 21:36:43] local.INFO: Attempting to download file ID: 6, path: submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf, checking public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 21:36:43] local.INFO: File found at public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 23:20:47] local.INFO: Task 4 template info - template_file: timesheet_templates/fPy9y1M3ejCPr0rDRYR0ndod70PyLXcQCaSY1q4n.pdf, template_file_name: Activity_Report.pdf  
+[2025-06-10 23:20:47] local.INFO: Found 2 submissions for task 4  
+[2025-06-10 23:20:47] local.INFO: Creating zip file at D:\year4\FYP\Taskly\taskly-api-repo\storage\app/temp\task_4_files_1749597647.zip  
+[2025-06-10 23:20:47] local.INFO: Checking submission 4, file path: submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf, public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 23:20:47] local.INFO: File found at public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 23:20:47] local.INFO: Added file to zip: Kanold_Vy_Activity_Report.pdf  
+[2025-06-10 23:20:47] local.INFO: Checking submission 6, file path: submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf, public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 23:20:47] local.INFO: File found at public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 23:20:47] local.INFO: Added file to zip: Headangelly_Huy_Activity_Report.pdf  
+[2025-06-10 23:20:47] local.INFO: Zip file created successfully with 2 files. Size: 147972 bytes  
+[2025-06-10 23:21:04] local.INFO: Task 4 template info - template_file: timesheet_templates/fPy9y1M3ejCPr0rDRYR0ndod70PyLXcQCaSY1q4n.pdf, template_file_name: Activity_Report.pdf  
+[2025-06-10 23:21:04] local.INFO: Found 2 submissions for task 4  
+[2025-06-10 23:21:04] local.INFO: Creating zip file at D:\year4\FYP\Taskly\taskly-api-repo\storage\app/temp\task_4_files_1749597664.zip  
+[2025-06-10 23:21:04] local.INFO: Checking submission 4, file path: submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf, public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 23:21:04] local.INFO: File found at public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 23:21:04] local.INFO: Added file to zip: Kanold_Vy_Activity_Report.pdf  
+[2025-06-10 23:21:04] local.INFO: Checking submission 6, file path: submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf, public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 23:21:04] local.INFO: File found at public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 23:21:04] local.INFO: Added file to zip: Headangelly_Huy_Activity_Report.pdf  
+[2025-06-10 23:21:04] local.INFO: Zip file created successfully with 2 files. Size: 147972 bytes  
+[2025-06-10 23:23:13] local.INFO: Task 4 template info - title: Kanold timesheet1  
+[2025-06-10 23:23:13] local.INFO: Found 1 approved submissions for task 4  
+[2025-06-10 23:23:13] local.INFO: Including submission ID: 4, status: approved, user: Kanold Vy  
+[2025-06-10 23:23:13] local.INFO: Creating zip file at D:\year4\FYP\Taskly\taskly-api-repo\storage\app/temp\task_4_approved_files_1749597793.zip  
+[2025-06-10 23:23:13] local.INFO: Processing approved submission 4, file path: submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf, public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 23:23:13] local.INFO: File found at public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 23:23:13] local.INFO: Added file to zip: Kanold_Vy_timesheet.pdf  
+[2025-06-10 23:23:13] local.INFO: Zip file created successfully with 1 approved files. Size: 73979 bytes  
+[2025-06-10 23:24:39] local.INFO: Task 4 template info - title: Kanold timesheet1  
+[2025-06-10 23:24:39] local.INFO: Found 2 approved submissions for task 4  
+[2025-06-10 23:24:39] local.INFO: Including submission ID: 4, status: approved, user: Kanold Vy  
+[2025-06-10 23:24:39] local.INFO: Including submission ID: 6, status: approved, user: Headangelly Huy  
+[2025-06-10 23:24:39] local.INFO: Creating zip file at D:\year4\FYP\Taskly\taskly-api-repo\storage\app/temp\task_4_approved_files_1749597879.zip  
+[2025-06-10 23:24:39] local.INFO: Processing approved submission 4, file path: submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf, public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 23:24:39] local.INFO: File found at public path: public/submitted_timesheets/r0ksfMsK1XEX2jK6WWpxSlnRcKRcjzfHDTLDo494.pdf  
+[2025-06-10 23:24:39] local.INFO: Added file to zip: Kanold_Vy_timesheet.pdf  
+[2025-06-10 23:24:39] local.INFO: Processing approved submission 6, file path: submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf, public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 23:24:39] local.INFO: File found at public path: public/submitted_timesheets/U7zOGfhGtbAhxT8Yrb0VME8TdXq1cpJmvesriNoq.pdf  
+[2025-06-10 23:24:39] local.INFO: Added file to zip: Headangelly_Huy_timesheet.pdf  
+[2025-06-10 23:24:39] local.INFO: Zip file created successfully with 2 approved files. Size: 147948 bytes  
