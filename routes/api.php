@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('/contracts/{contractId}/members/{userId}', [ContractController::class, 'updateMember']);
     Route::delete('/contracts/{contractId}/members/{userId}', [ContractController::class, 'removeMember']);
     
+    Route::get('/contracts/{contract}/submitter-supervisors', [ContractController::class, 'getSubmitterSupervisors']);
     Route::get('/contracts/{id}/supervisors', [ContractController::class, 'getSupervisors']);
     
     // timesheet‐task CRUD

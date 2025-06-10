@@ -5,16 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Invite;
 use App\Models\Contract;
-use App\Models\SubmitterSupervisor;
-use App\Models\SubmitterLabel;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\SubmitterLabel;
+use Illuminate\Support\Facades\DB;
+use App\Models\SubmitterSupervisor;
 
 class ContractController extends Controller
 {
     /**
      * Create a new contract and attach the creator as owner.
      */
+    public function getSubmitterSupervisors($contract)
+    {
+        // Fetch relationships from the submitter_supervisor table
+        $relationships = DB::table('submitter_supervisor')
+            ->where('contract_id', $contract)
+            ->get(['submitter_id', 'supervisor_id']);
+        
+        return response()->json($relationships);
+    }
+
     public function store(Request $request)
     {
         // ── BLOCK GMAIL USERS HERE ──
